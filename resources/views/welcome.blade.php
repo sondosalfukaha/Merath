@@ -1175,8 +1175,6 @@
 
                 <div class="featured-grid">
 
-
-
                     @foreach ($featuredProducts as $product)
                         <div class="featured-card group">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
