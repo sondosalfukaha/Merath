@@ -961,8 +961,8 @@
 
             <!-- Desktop Navigation -->
             <nav class="desktop">
-                <a href="#">Home</a>
-                <a href="#">Shop</a>
+                <a href="/">Home</a>
+                <a href="/shop">Shop</a>
                 <a href="#">Collections</a>
                 <a href="#">About</a>
                 <a href="#">Contact</a>

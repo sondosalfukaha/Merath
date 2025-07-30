@@ -16,11 +16,11 @@ Route::get('/', function () {
     $featuredProducts = Product::where('is_featured', true)->inRandomOrder()->take(3)->get();
 
     $bestSellers = Product::where('is_best_seller', true)->inRandomOrder()->take(6)->get();
-
-
-
-
     return view('welcome', compact('categories','products','featuredProducts', 'bestSellers'));
+});
+
+Route::get('/shop', function () {
+        return view('shop');
 });
 
 Route::get('/dashboard', function () {
