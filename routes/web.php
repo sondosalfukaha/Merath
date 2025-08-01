@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Models\Category;
 use App\Http\Controllers\Admin\ProductController;
 use App\Models\Product;
+use App\Http\Controllers\ShopController;
+
 
 Route::get('/', function () {
     $categories = Category::all(); // fetch all categories from the DB
@@ -59,3 +61,6 @@ Route::post('admin/products', [ProductController::class, 'store'])->name('admin.
 Route::put('admin/products/{id}', [ProductController::class, 'update'])->name('admin.products.update');
 Route::delete('admin/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 Route::put('admin/products/{product}', [ProductController::class, 'update'])->name('products.update');
+/*Route::get('/shop', [ShopController::class, 'index'])->name('shop');*/
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+Route::get('/price-range', [ProductController::class, 'getPriceRange']);

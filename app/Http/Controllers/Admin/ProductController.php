@@ -8,6 +8,16 @@ use App\Models\Category;
 
 class ProductController extends Controller
 {
+    public function getPriceRange()
+{
+    $min = Product::min('price');
+    $max = Product::max('price');
+
+    return response()->json([
+        'min' => $min,
+        'max' => $max,
+    ]);
+}
     public function dashboard()
     {
         $products = Product::with('category')->get();

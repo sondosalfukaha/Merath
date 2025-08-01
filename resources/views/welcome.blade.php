@@ -4,13 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Merath Navbar</title>
+    <link rel="preload" href="background1.jpg" as="image">
+    <link rel="preload" href="background2.jpg" as="image">
+    <link rel="preload" href="background33.jpg" as="image">
+    <link rel="preload" href="background4.jpg" as="image">
     @once
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
             integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
     @endonce
-
-
 
     <style>
         @media(max-width:767px) {
@@ -121,7 +123,7 @@
         }
 
         header {
-            background-color: white;
+            background-color: #e5e5e5;
             border-bottom: 1px solid #e5e5e5;
         }
 
@@ -137,7 +139,7 @@
 
         .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 24px;
+            font-size: 30px;
             font-weight: bold;
             text-decoration: none;
             color: black;
@@ -413,6 +415,7 @@
             font-size: 2rem;
             font-weight: bold;
             margin-bottom: 3rem;
+            font-family: "Playfair Display", serif;
         }
 
         .grid {
@@ -452,6 +455,19 @@
             padding: 1rem;
         }
 
+        .overlay2 {
+            position: absolute;
+            inset: 0;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 1rem;
+        }
+
         .overlay h3 {
             font-size: 1.5rem;
             font-weight: bold;
@@ -481,6 +497,10 @@
             max-width: 1140px;
             margin: 0 auto;
             padding: 0 1rem;
+        }
+
+        .cont {
+            background: #b3c2d84f;
         }
 
         .slider-wrapper {
@@ -527,32 +547,78 @@
 
         .product-card {
             min-width: 280px;
-            max-width: 280px;
-            background: white;
-            border-radius: 8px;
+
+
+            text-align: center;
             overflow: hidden;
             scroll-snap-align: start;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
         }
 
         .product-card img {
             width: 100%;
-            height: 180px;
+            height: 300px;
             object-fit: cover;
+            transition: transform 0.7s ease;
         }
+
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
 
         .product-card .info {
             padding: 1rem;
         }
 
         .product-card .info h3 {
+            font-family: "Playfair Display", serif;
+
             font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+
         }
 
         .product-card .info p {
             font-size: 0.95rem;
-            color: #555;
+            font-family: "Playfair Display", serif;
+        }
+
+        .info .getcolorOfprice {
+            color: #b3934f
+        }
+
+        .info .categoryname {
+            color: #4a4a4a;
+        }
+
+        .product-card1 {
+            position: relative;
+        }
+
+        .product-card1::after {
+            content: "New";
+            position: absolute;
+            top: 5px;
+            left: 0;
+            background: #000;
+            color: #fff;
+            padding: 5px 30px;
+            font-size: 13px;
+        }
+
+        .product-card2 {
+            position: relative;
+        }
+
+        .product-card2::after {
+            content: "Best Seller";
+            position: absolute;
+            top: 5px;
+            left: 0;
+            background: #C4A35A;
+            color: #fff;
+            padding: 5px 30px;
+            font-size: 13px;
         }
 
         < !-- Style section --><style>.scrollbar-hide::-webkit-scrollbar {
@@ -655,7 +721,7 @@
             padding-bottom: 4rem;
             max-width: 1140px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 15px 1rem;
 
         }
 
@@ -948,11 +1014,71 @@
             color: #6b7280;
             font-size: 0.875rem;
         }
-    </style>
+
+        .h2title {
+            margin: 20px auto;
+            font-family: "Playfair Display", serif;
+
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            animation: backgroundSlideshow 16s infinite;
+        }
+
+        @keyframes backgroundSlideshow {
+            0% {
+                background-image: url('/images/background1.jpg');
+
+            }
+
+            25% {
+                background-image: url('/images/background2.jpg');
+
+            }
+
+            50% {
+                background-image: url('/images/background22.jpg');
+            }
+
+            75% {
+                background-image: url('/images/background4.jpg');
+            }
+
+            100% {
+                background-image: url('/images/background1.jpg');
+            }
+        }
+
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #cdc7be98;
+        }
+
+        .overlay2 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #cdc7be50;
+        }
     </style>
 </head>
 
 <body>
+
     <!--Start NavBar-->
     <header>
         <div class="container">
@@ -963,9 +1089,9 @@
             <nav class="desktop">
                 <a href="/">Home</a>
                 <a href="/shop">Shop</a>
-                <a href="#">Collections</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a>
+                <a href="/collection">Collections</a>
+                <a href="/about">About</a>
+                <a href="contact">Contact</a>
             </nav>
 
             <!-- Icons -->
@@ -995,8 +1121,8 @@
     <!--End NavBar-->
     <!--Start Hero-->
     <div class="hero-container">
-        <img src="https://images.pexels.com/photos/6207772/pexels-photo-6207772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-            alt="Luxury Art Collection">
+        <div class="background"></div>
+        <div class="overlay"></div>
         <div class="hero-overlay">
             <div class="hero-content">
                 <h1>Discover Artistry<br>for Your Home</h1>
@@ -1059,7 +1185,7 @@
                 <a href="{{ url('/shop?category=' . $category->name) }}" class="category">
 
                     <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}">
-                    <div class="overlay">
+                    <div class="overlay2">
                         <h3>{{ $category->name }}</h3>
                         <p>{{ $category->description }}</p>
                         <span class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></span>
@@ -1069,11 +1195,11 @@
         </div>
     </div>
 
-    <div class="py-16">
+    <div class="py-16 cont">
         <div class="containerc">
             <div class="slider-wrapper">
                 <div class="slider-header">
-                    <h2>New Arrivals</h2>
+                    <h2 class="h2title title">New Arrivals</h2>
                     <div class="slider-buttons">
                         <button onclick="scrollSlider('left')">
                             <i class="fas fa-chevron-left"></i>
@@ -1086,13 +1212,14 @@
 
                 <div class="slider" id="productSlider">
                     @foreach ($products as $product)
-                        <div class="product-card">
+                        <div class="product-card product-card1">
                             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-                            <h3>{{ $product->name }}</h3>
+
                             <div class="info">
-                                <p>{{ $product->description }}</p>
-                                <p>{{ $product->price }} JD</p>
-                                <p>{{ $product->category->name }}</p>
+                                <h3>{{ $product->name }}</h3>
+
+                                <p class="categoryname">{{ $product->category->name }}</p>
+                                <p class="getcolorOfprice">{{ $product->price }} JD</p>
                             </div>
                         </div>
                     @endforeach
@@ -1100,7 +1227,7 @@
 
             </div>
         </div>
-
+        <hr>
         <div class="essence-section">
             <div class="essence-container">
                 <div class="essence-grid">
@@ -1129,12 +1256,12 @@
 
             </div>
         </div>
-
+        <hr>
         <div class="py-16">
             <div class="containerc">
                 <div class="slider-wrapper">
                     <div class="slider-header">
-                        <h2>Best Sellers</h2>
+                        <h2 class="title h2title">Best Sellers</h2>
                         <div class="slider-buttons">
                             <button onclick="scrollSlider('left')">
                                 <i class="fas fa-chevron-left"></i>
@@ -1148,12 +1275,12 @@
                     <div class="slider" id="productSlider">
 
                         @forelse ($bestSellers as $product)
-                            <div class="product-card">
+                            <div class="product-card product-card2">
                                 <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
                                 <div class="info">
                                     <h3>{{ $product->name }}</h3>
-                                    <h5>{{ $product->category->name }}</h5>
-                                    <p>JD{{ $product->price }}</p>
+                                    <h5 class="categoryname">{{ $product->category->name }}</h5>
+                                    <p class="getcolorOfprice">JD{{ $product->price }}</p>
                                 </div>
                             </div>
                         @empty
