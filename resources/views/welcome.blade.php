@@ -863,6 +863,38 @@
         .form-wrapper {
             max-width: 28rem;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .form-wrapper p {
+            font-size: 15px;
+            border: 1px solid;
+            padding: 0 30px;
+
+        }
+
+        .form-wrapper a {
+            margin-top: 15px;
+        }
+
+        .form-wrapper a button {
+            background-color: #c4a35a;
+            color: white;
+            padding: 5px 30px;
+            margin-left: 5px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-wrapper a button:hover {
+            opacity: 50%;
+            background: pink;
+            color: #4a4a4a;
         }
 
         .newsletter-form {
@@ -1327,16 +1359,16 @@
                         Stay updated on new collections, exclusive offers, and design inspiration
                     </p>
                 </div>
-
                 <div class="form-wrapper">
-                    <form class="newsletter-form" method="POST" action="#">
-                        @csrf
-                        <input type="email" name="email" placeholder="Merath" required value="@Merath"
-                            class="newsletter-input" />
-                        <button type="submit" class="newsletter-button">
-                            Follow
-                        </button>
-                    </form>
+                    <h4>Follow Us on Instagram</h4>
+
+
+                    <img src="{{ asset('images/1.png') }}" width="70px" alt="">
+
+
+                    <a href="https://www.instagram.com/merathart/" target="_blank">
+                        <button style="margin-top:5px">Merath Art</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1388,11 +1420,11 @@
                     <div>
                         <h3 class="footer-heading">Join Our Family on Instagram</h3>
                         <p class="footer-desc">Follow to track updates on new collections and special offers.</p>
-                        <form method="POST" action="#">
+                        <form method="POST" action="https://www.instagram.com/merathart/">
                             @csrf
                             <div class="footer-form">
-                                <input type="email" name="email" placeholder="Merath" required value="@Merath"
-                                    class="footer-input" />
+                                <input type="text" name="email" placeholder="Merath" required
+                                    value="@Merathart" class="footer-input" />
                                 <button type="submit" class="footer-button">Follow</button>
                             </div>
                         </form>
