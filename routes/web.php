@@ -8,6 +8,8 @@ use App\Models\Category;
 use App\Http\Controllers\Admin\ProductController;
 use App\Models\Product;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\WishlistController;
+use App\Models\Wishlist;
 
 
 Route::get('/', function () {
@@ -18,7 +20,8 @@ Route::get('/', function () {
     $featuredProducts = Product::where('is_featured', true)->inRandomOrder()->take(3)->get();
 
     $bestSellers = Product::where('is_best_seller', true)->inRandomOrder()->take(6)->get();
-    return view('welcome', compact('categories','products','featuredProducts', 'bestSellers'));
+    $wishlists = Wishlist::all();
+    return view('welcome', compact('categories','products','featuredProducts', 'bestSellers','wishlists'));
 });
 
 Route::get('/shop', function () {
@@ -35,8 +38,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 });
-Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
-Route::post('/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
 
 require __DIR__.'/auth.php';
 
@@ -58,9 +59,20 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 Route::get('admin/dashboard', [ProductController::class, 'dashboard'])->middleware(['auth', 'admin'])->name('admin.dashboard');
 
 Route::post('admin/products', [ProductController::class, 'store'])->name('admin.products.store');
+
 Route::put('admin/products/{id}', [ProductController::class, 'update'])->name('admin.products.update');
 Route::delete('admin/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 Route::put('admin/products/{product}', [ProductController::class, 'update'])->name('products.update');
 /*Route::get('/shop', [ShopController::class, 'index'])->name('shop');*/
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 Route::get('/price-range', [ProductController::class, 'getPriceRange']);
+
+Route::get('admin/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+Route::post('admin/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
+
+Route::middleware('web')->group(function () {
+    $products = Product::all();
+    Route::post('/wishlist/add/{product_id}', [WishlistController::class, 'add'])->name('wishlist.add');
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
+    Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
+});

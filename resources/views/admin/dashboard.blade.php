@@ -296,54 +296,60 @@
                                         </tr>
                                     </thead>
                                     <tbody id="productsTable">
-                                        @foreach ($products as $product)
-                                            <tr>
-                                                <td>
-                                                    @if ($product->image)
-                                                        <img src="{{ asset('storage/' . $product->image) }}"
-                                                            alt="Image" width="70" height="70"
-                                                            class="rounded border">
-                                                    @else
-                                                        <span>No Image</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $product->name }}</td>
-                                                <td>{{ $product->category->name }}</td>
-                                                <td>JD{{ $product->price }}</td>
-                                                <td>{{ $product->stock }}</td>
-                                                <td>
-                                                    @if ($product->is_featured)
-                                                        ✅
-                                                    @else
-                                                        ❌
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($product->is_best_seller)
-                                                        ✅
-                                                    @else
-                                                        ❌
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-sm btn-outline-secondary edit-product-btn"
-                                                        data-id="{{ $product->id }}"
-                                                        data-name="{{ $product->name }}"
-                                                        data-category="{{ $product->category->name }}"
-                                                        data-price="{{ $product->price }}"
-                                                        data-stock="{{ $product->stock }}" data-bs-toggle="modal"
-                                                        data-bs-target="#editProductModal">Edit</button>
+                                        @if ($products->count() > 0)
+                                            @foreach ($products as $product)
+                                                <tr>
+                                                    <td>
+                                                        @if ($product->image)
+                                                            <img src="{{ asset('storage/' . $product->image) }}"
+                                                                alt="Image" width="70" height="70"
+                                                                class="rounded border">
+                                                        @else
+                                                            <span>No Image</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $product->name }}</td>
+                                                    <td>{{ $product->category->name }}</td>
+                                                    <td>JD{{ $product->price }}</td>
+                                                    <td>{{ $product->stock }}</td>
+                                                    <td>
+                                                        @if ($product->is_featured)
+                                                            ✅
+                                                        @else
+                                                            ❌
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($product->is_best_seller)
+                                                            ✅
+                                                        @else
+                                                            ❌
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                            class="btn btn-sm btn-outline-secondary edit-product-btn"
+                                                            data-id="{{ $product->id }}"
+                                                            data-name="{{ $product->name }}"
+                                                            data-category="{{ $product->category->name }}"
+                                                            data-price="{{ $product->price }}"
+                                                            data-stock="{{ $product->stock }}" data-bs-toggle="modal"
+                                                            data-bs-target="#editProductModal">Edit</button>
 
-                                                    <form method="POST"
-                                                        action="{{ route('products.destroy', $product) }}"
-                                                        style="display:inline-block;">
-                                                        @csrf @method('DELETE')
-                                                        <button class="btn btn-sm btn-danger">Delete</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                                        <form method="POST"
+                                                            action="{{ route('products.destroy', $product) }}"
+                                                            style="display:inline-block;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-sm btn-danger">Delete</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
                                     </tbody>
+
+
                                 </table>
                             </div>
                         </div>
@@ -540,8 +546,12 @@
                                         id="productCategory" required>
                                         <option value="">Choose Category</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            <option value="{{ $category->id }}"
+                                                {{ isset($product) && $category->id == $product->category_id ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
                                         @endforeach
+
                                     </select>
                                 </div>
                             </div>
@@ -606,10 +616,11 @@
                                     <select name="category_id" class="form-control">
                                         @foreach ($categories as $category)
                                             <option value="{{ $category->id }}"
-                                                {{ $category->id == $product->category_id ? 'selected' : '' }}>
+                                                {{ isset($product) && $category->id == $product->category_id ? 'selected' : '' }}>
                                                 {{ $category->name }}
                                             </option>
                                         @endforeach
+
                                     </select>
                                 </div>
                             </div>
@@ -633,16 +644,7 @@
                                         id="editproductImage">
                                 </div>
                                 <div>
-                                    <label>
-                                        <input type="checkbox" name="is_featured"
-                                            {{ $product->is_featured ? 'checked' : '' }}>
-                                        Featured Product
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="is_best_seller"
-                                            {{ $product->is_best_seller ? 'checked' : '' }}>
-                                        Best Seller
-                                    </label>
+
                                 </div>
 
                             </div>
@@ -676,7 +678,7 @@
                             <div class="mb-3">
                                 <label for="categoryName" class="block text-sm">Category Name <span
                                         class="text-red-500">*</span></label>
-                                <input type="text" name="categoryName" id="categoryName" required
+                                <input type="text" name="name" id="categoryName" required
                                     class="w-full border border-gray-300 p-2 rounded">
                             </div>
 

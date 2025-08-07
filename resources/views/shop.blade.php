@@ -1184,6 +1184,21 @@
             /* pushes it below the "New" label */
             background-color: goldenrod;
         }
+
+        .btn-wishlist {
+            margin-top: 10px;
+            background-color: transparent;
+            border: 1px solid #ff4081;
+            color: #ff4081;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-wishlist:hover {
+            background-color: #ff4081;
+            color: white;
+        }
     </style>
 
 </head>
@@ -1360,6 +1375,8 @@
 
 
     <script>
+        const csrfToken = '{{ csrf_token() }}'; // server renders this value
+
         let minPrice = 0;
         let maxPrice = 1000;
         const sampleProducts = @json($products);
@@ -1377,7 +1394,12 @@
                 <img src="${imageUrl}" alt="${product.name}" class="product-image">
                 <p class="product-category>${product.category.name}</p>
                 <p class="product-price">${product.price} JD</p>
-                                `;
+                <form action="/wishlist/add/${product.id}" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn-wishlist">Add to Wishlist ❤️</button>
+    </form>                
+                `;
+
                 grid.appendChild(card);
             });
 

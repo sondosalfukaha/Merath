@@ -1130,12 +1130,14 @@
             <div class="icons">
                 <span class="icon"><i class="fas fa-search"></i></span>
                 <a href="/register" class="icon"><i class="fas fa-user"></i></a>
-                <a href="#" class="icon"><i class="fas fa-heart"></i></a>
-                <div class="icon cart-icon" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge" id="cart-count">2</span>
-                </div>
-                <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+                @auth
+                    <a href="{{ route('wishlist') }}" class="icon"><i class="fas fa-heart"></i>
+                @endauth
+                    <div class="icon cart-icon" onclick="toggleCart()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cart-count">2</span>
+                    </div>
+                    <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
             </div>
 
 

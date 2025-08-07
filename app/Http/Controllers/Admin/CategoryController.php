@@ -13,28 +13,29 @@ class CategoryController extends Controller
         return view('admin.categories.index', compact('categories'));
     }
 
-   public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'nullable|string',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-    ]);
+    public function store(Request $request)
+        {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            ]);
 
-    $imagePath = null;
+            $imagePath = null;
 
-    if ($request->hasFile('image')) {
-        $imagePath = $request->file('image')->store('categories', 'public');
-    }
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('categories', 'public');
+            }
 
-    Category::create([
-        'name' => $request->name,
-        'description' => $request->description,
-        'image' => $imagePath,
-    ]);
+            Category::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'image' => $imagePath,
+            ]);
+            
 
-    return redirect()->back()->with('success', 'Category created successfully!');
-}
+            return redirect()->back()->with('success', 'Category created successfully!');
+        }
 
 // Update category
 public function update(Request $request, $id)
