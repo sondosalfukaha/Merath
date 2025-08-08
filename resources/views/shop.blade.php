@@ -889,13 +889,13 @@
             color: white;
             font-weight: bold;
             font-size: 12px;
-            border-radius: 4px;
+
             z-index: 2;
         }
 
         .product-label.featured {
-            background-color: #28a745;
-            /* green */
+            background-color: #000;
+            top: 36px;
         }
 
         .product-label.best {
@@ -1121,7 +1121,10 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="filterSidebar">
             <div class="filter-group">
-                <button id="resetFiltersBtn" style="margin-top: 10px;">Reset All</button>
+                <button id="resetFiltersBtn"
+                    style="margin-top: 10px; background-color: #b3934f;color:#fff;
+                border:none; padding:5px 8px;">Reset
+                    All</button>
 
                 <div class="filter-header">
                     <h3 style="font-family: 'Playfair Display', serif;">Categories</h3>
@@ -1157,7 +1160,10 @@
             <div class="top-controls">
                 <p><span id="productCount">0</span> products</p>
                 <div class="sort-dropdown">
-                    <button onclick="toggleSortMenu()">Sort By</button>
+                    <button onclick="toggleSortMenu()"
+                        style=" background-color: #b3934f;color:#fff;
+                border:none; padding:5px 8px;">Sort
+                        By..</button>
                     <div class="sort-menu" id="sortMenu">
                         <button onclick="sortProducts('newest')">Newest</button>
                         <button onclick="sortProducts('price-low-high')">Price: Low to High</button>
@@ -1259,9 +1265,10 @@
                 card.className = 'product-card';
                 let labelHTML = "";
                 if (product.is_best_seller) {
-                    labelHTML = `<div class="product-label best-seller">Best Seller</div>`;
-                } else if (product.is_featured) {
-                    labelHTML = `<div class="product-label featured">Featured</div>`;
+                    labelHTML += `<div class="product-label best-seller">Best Seller</div>`;
+                }
+                if (product.is_featured) {
+                    labelHTML += `<div class="product-label featured">Featured</div>`;
                 }
 
                 card.innerHTML = `
