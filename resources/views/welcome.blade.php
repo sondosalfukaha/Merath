@@ -13,6 +13,8 @@
             integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
     @endonce
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 
     <style>
         @media(max-width:767px) {
@@ -185,8 +187,8 @@
             color: white;
             font-size: 12px;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 17px;
+            height: 13px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -608,6 +610,36 @@
 
         .product-card2 {
             position: relative;
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .icon-overlay {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 6px;
+            font-size: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
         }
 
         .product-card2::after {
@@ -1107,9 +1139,53 @@
             background: #cdc7be50;
         }
     </style>
+    <style>
+        #scrollToTop {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            display: none;
+            background-color: #b3934f;
+            color: white;
+            padding: 10px 12px;
+            border-radius: 50%;
+            font-size: 18px;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        #scrollToTop:hover {
+            background-color: #555;
+        }
+
+        #scrollToTop2 {
+            position: fixed;
+            bottom: 25px;
+            left: 20px;
+            display: none;
+            background-color: #b3934f;
+            color: white;
+            padding: 10px 12px;
+            border-radius: 50%;
+            font-size: 18px;
+            z-index: 9999;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        #scrollToTop2:hover {
+            background-color: #555;
+        }
+    </style>
+
 </head>
 
+<a href="#" id="scrollToTop" title="Back to Top">
+        <i class="fa-solid fa-arrow-up"></i>
+    </a>
 <body>
+    
 
     <!--Start NavBar-->
     <header>
@@ -1128,16 +1204,17 @@
 
             <!-- Icons -->
             <div class="icons">
-                <span class="icon"><i class="fas fa-search"></i></span>
                 <a href="/register" class="icon"><i class="fas fa-user"></i></a>
                 @auth
-                    <a href="{{ route('wishlist') }}" class="icon"><i class="fas fa-heart"></i>
+                    <a href="{{ route('wishlist') }}"class="icon">
+                        <i class="fas fa-heart"></i>
+                    </a>
                 @endauth
-                    <div class="icon cart-icon" onclick="toggleCart()">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge" id="cart-count">2</span>
-                    </div>
-                    <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+                <div class="icon cart-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cart-count">0</span>
+                </div>
+                <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
             </div>
 
 
@@ -1247,17 +1324,37 @@
                 <div class="slider" id="productSlider">
                     @foreach ($products as $product)
                         <div class="product-card product-card1">
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                            <div class="product-image-container">
+                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+
+                                <!-- Overlay Icons -->
+                                <div class="icon-overlay">
+                                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="icon-btn">
+                                            <i class="fa-regular fa-heart" style="color: #b3934f"></i>
+                                            <!-- outline -->
+                                        </button>
+                                    </form>
+                                    <form action="" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="icon-btn">
+                                            <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
 
                             <div class="info">
                                 <h3>{{ $product->name }}</h3>
-
                                 <p class="categoryname">{{ $product->category->name }}</p>
                                 <p class="getcolorOfprice">{{ $product->price }} JD</p>
                             </div>
                         </div>
                     @endforeach
                 </div>
+
 
             </div>
         </div>
@@ -1266,7 +1363,7 @@
             <div class="essence-container">
                 <div class="essence-grid">
                     <div>
-                        <img src="https://images.pexels.com/photos/6207780/pexels-photo-6207780.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                        <img src="{{ asset('storage/' . $randomProduct->image) }}" alt="{{ $randomProduct->name }}"
                             alt="Featured Collection" class="essence-image" />
                     </div>
                     <div class="essence-text">
@@ -1310,7 +1407,28 @@
 
                         @forelse ($bestSellers as $product)
                             <div class="product-card product-card2">
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                                <div class="product-image-container">
+                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+
+                                    <!-- Overlay Icons -->
+                                    <div class="icon-overlay">
+                                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="icon-btn">
+                                                <i class="fa-regular fa-heart" style="color: #b3934f"></i>
+                                                <!-- outline -->
+                                            </button>
+                                        </form>
+                                        <form action="" method="POST" style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="icon-btn">
+                                                <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
                                 <div class="info">
                                     <h3>{{ $product->name }}</h3>
                                     <h5 class="categoryname">{{ $product->category->name }}</h5>
@@ -1342,7 +1460,7 @@
                                 class="featured-image group-hover-scale">
                             <div class="featured-overlay">
                                 <h3 class="featured-name">{{ $product->name }}</h3>
-                                <p class="featured-price">{{ $product->price }}</p>
+                                <p class="featured-price">JOD {{ $product->price }}</p>
                                 <a href="/product/1" class="featured-button">View Details</a>
                             </div>
 
@@ -1484,6 +1602,26 @@
             }
         </script>
 
+
+        <script>
+            const scrollToTopBtn = document.getElementById("scrollToTop");
+
+            window.addEventListener("scroll", () => {
+                if (window.scrollY > 300) {
+                    scrollToTopBtn.style.display = "block";
+                } else {
+                    scrollToTopBtn.style.display = "none";
+                }
+            });
+
+            scrollToTopBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    behavior: "smooth"
+                });
+            });
+        </script>
 </body>
 
 </html>

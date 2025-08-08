@@ -1,147 +1,110 @@
+<!-- resources/views/details.blade.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    @once
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-            integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
-    @endonce
-    <title>Shop Collection</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-
         .container {
             max-width: 1200px;
-            margin: auto;
-            padding: 0 1rem;
+            margin: 0 auto;
+            padding: 2rem 1rem;
         }
 
-        .shop-header {
-            background-color: #f3f4f6;
-            padding: 3rem 0;
-            text-align: center;
-        }
-
-        .shop-header h1 {
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-
-        .shop-wrapper {
+        .flex {
             display: flex;
-            flex-direction: column;
-            gap: 2rem;
-            padding: 2rem 0;
         }
 
-        @media (min-width: 768px) {
-            .shop-wrapper {
-                flex-direction: row;
-            }
+        .gap-12 {
+            gap: 3rem;
         }
 
-        .sidebar {
-            width: 260px;
-            flex-shrink: 0;
-            display: none;
-        }
-
-        @media (min-width: 768px) {
-            .sidebar {
-                display: block;
-            }
-        }
-
-        .filter-header {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .filter-group {
-            margin-bottom: 2rem;
-        }
-
-        .product-section {
-            flex: 1;
-        }
-
-        .top-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .mb-4,
+        .mb-6,
+        .mb-8,
+        .mb-16 {
             margin-bottom: 1.5rem;
         }
 
-        .sort-dropdown {
-            position: relative;
+        .text-gray-600 {
+            color: #4B5563;
         }
 
-        .sort-menu {
-            display: none;
-            position: absolute;
-            right: 0;
-            background: white;
-            border: 1px solid #ddd;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-            z-index: 10;
+        .text-gray-500 {
+            color: #6B7280;
         }
 
-        .sort-menu.active {
-            display: block;
+        .text-[#C4A35A] {
+            color: #C4A35A;
         }
 
-        .sort-menu button {
-            width: 100%;
-            text-align: left;
-            padding: 0.75rem 1rem;
+        .border-b {
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .font-medium {
+            font-weight: 500;
+        }
+
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+
+        .text-3xl {
+            font-size: 1.875rem;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+        }
+
+        .hover\:underline:hover {
+            text-decoration: underline;
+        }
+
+        .hover\:text-amber:hover {
+            color: #C4A35A;
+        }
+
+        .border {
+            border: 1px solid #D1D5DB;
+        }
+
+        .button-primary {
+            background: #C4A35A;
+            color: white;
+            padding: 0.75rem 1.5rem;
             border: none;
-            background: none;
             cursor: pointer;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .product-card {
-            background: white;
-            padding: 1rem;
-            border: 1px solid #ddd;
-            text-align: center;
-        }
-
-        /* Mobile Filters */
-        .mobile-filters {
-            display: none;
-            padding: 1rem;
-        }
-
-        .filter-toggle-btn {
-            background: none;
-            border: 1px solid #ccc;
-            padding: 0.5rem 1rem;
+        .tab-button {
+            padding: 0.75rem 1.5rem;
             cursor: pointer;
+            background: none;
+            border: none;
+            font-weight: 500;
         }
 
-        @media (max-width: 767px) {
-            .mobile-filters {
-                display: block;
-            }
+        .active-tab {
+            border-bottom: 2px solid #C4A35A;
+            color: #C4A35A;
         }
 
-        .hidden {
-            display: none;
+        .tab-content {
+            margin-top: 1.5rem;
         }
     </style>
     <style>
@@ -1143,61 +1106,39 @@
         }
     </style>
     <style>
-        .product-card {
-            width: 100%;
-            max-width: 300px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .product-image-wrapper {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-        }
-
-        .product-image {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            display: block;
-            border-radius: 10px;
-        }
-
-        .badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 5px 10px;
+        .button-primary {
+            background-color: #C4A35A;
             color: white;
-            font-size: 12px;
-            border-radius: 3px;
-            z-index: 2;
-        }
-
-        .badge-new {
-            background-color: black;
-        }
-
-        .badge-best-seller {
-            top: 35px;
-            /* pushes it below the "New" label */
-            background-color: goldenrod;
-        }
-
-        .btn-wishlist {
-            margin-top: 10px;
-            background-color: transparent;
-            border: 1px solid #ff4081;
-            color: #ff4081;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border: none;
+            font-weight: 500;
             cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
 
-        .btn-wishlist:hover {
-            background-color: #ff4081;
+        .button-primary:hover {
+            background-color: #a48444;
+        }
+
+        .wishlist-btn {
+            background: none;
+            border: 2px solid #C4A35A;
+            padding: 10px 14px;
+            font-size: 18px;
+            border-radius: 4px;
+            color: #C4A35A;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-btn:hover {
+            background-color: #C4A35A;
             color: white;
+        }
+
+        .wishlist-btn i {
+            pointer-events: none;
         }
     </style>
 
@@ -1209,353 +1150,118 @@
         <div class="container">
             <!-- Logo -->
             <a href="#" class="logo">Merath</a>
-
-            <!-- Desktop Navigation -->
-            <nav class="desktop">
-                <a href="/">Home</a>
-                <a href="/shop">Shop</a>
-                <a href="#">Collections</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a>
-            </nav>
-
-            <!-- Icons -->
-            <div class="icons">
-                <span class="icon"><i class="fas fa-search"></i></span>
-                <a href="/register" class="icon"><i class="fas fa-user"></i></a>
-                <a href="#" class="icon"><i class="fas fa-heart"></i></a>
-                <div class="icon cart-icon" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge" id="cart-count">2</span>
-                </div>
-                <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
-            </div>
-
-
         </div>
 
-        <!-- Mobile Navigation -->
-        <nav class="mobile" id="mobileMenu">
-            <a href="#">Home</a>
-            <a href="#">Shop</a>
-            <a href="#">Collections</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
-        </nav>
+
     </header>
     <!--End NavBar-->
-    <div class="shop-header">
-        <div class="container">
-            <h1 style="margin:0 auto;font-family: 'Playfair Display', serif;">Shop Collection</h1>
+    <div class="container">
+        <div class="mb-6">
+            <a href="/shop" class="text-gray-500 hover:text-amber flex items-center">
+                ← Back to Shop
+            </a>
+        </div>
+
+        <div class="flex gap-12 mb-16">
+            <div style="flex: 1;">
+                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
+                    style="width:50%; height:auto;" />
+            </div>
+
+            <!-- Product Info -->
+            <div style="flex: 1;">
+                <h1 class="font-playfair text-3xl font-bold mb-2">{{ $product->name }}</h1>
+                <p class="text-2xl text-[#C4A35A] font-medium mb-4">${{ $product->price }}</p>
+
+                <div class="mb-6">
+                    <p class="text-gray-600">{{ $product->description }}</p>
+                </div>
+
+                <div class="mb-6">
+                    <div class="mb-2"><strong>Category:</strong> {{ $product->category->name ?? 'N/A' }}</div>
+
+                </div>
+
+                <!-- Quantity + Add to Cart + Wishlist -->
+                <form method="POST" action="">
+                    @csrf
+                    <div class="mb-4">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1"
+                            style="width: 80px; margin-left: 10px;" />
+                    </div>
+
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <button type="submit" class="button-primary">
+                            Add to Cart
+                        </button>
+
+                        <!-- Wishlist Button -->
+                        <form method="POST" action="">
+                            @csrf
+                            <button type="submit" class="wishlist-btn" title="Add to Wishlist">
+                                <i class="fa-regular fa-heart"></i>
+                            </button>
+                        </form>
+                    </div>
+                </form>
+
+
+
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="mb-16">
+            <div class="border-b mb-6">
+                <button class="tab-button active-tab" onclick="showTab('description')">Description</button>
+                <button class="tab-button" onclick="showTab('details')">Product Details</button>
+                <button class="tab-button" onclick="showTab('shipping')">Shipping & Returns</button>
+            </div>
+
+            <div class="tab-content" id="tab-description">
+                <p>{{ $product->description }}</p>
+                <p>
+                    Each piece is meticulously crafted with quality and precision.
+                    The result is a unique item that adds character and elegance to any space.
+                </p>
+            </div>
+
+            <div class="tab-content" id="tab-details" style="display:none">
+                <ul>
+                    <li><strong>Category:</strong> {{ $product->category->name }}</li>
+
+                    <li>Handcrafted with care</li>
+                    <li>Unique variations in each piece</li>
+                    <li>Wipe clean with a damp cloth</li>
+                </ul>
+            </div>
+
+            <div class="tab-content" id="tab-shipping" style="display:none">
+                <h3>Shipping Information</h3>
+                <p>All products are shipped within 2-3 business days of order confirmation.</p>
+                <h3>Return Policy</h3>
+                <p>
+                    You may return it within 30 days of delivery for a full refund or exchange.
+                    Items must be in original condition and packaging.
+                </p>
+                <p>
+                    For full policy, visit our
+                    <a href="" class="text-[#C4A35A] hover:underline">Shipping & Returns
+                        page</a>.
+                </p>
+            </div>
         </div>
     </div>
 
-    <div class="container shop-wrapper" style="display: flex; align-items: flex-start;">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="filterSidebar">
-            <div class="filter-group">
-                <button id="resetFiltersBtn" style="margin-top: 10px;">Reset All</button>
-
-                <div class="filter-header">
-                    <h3 style="font-family: 'Playfair Display', serif;">Categories</h3>
-                </div>
-                @foreach ($categories as $category)
-                    <label style="font-family: 'Playfair Display', serif;"><input type="checkbox"
-                            class="filter-category" value="{{ $category->name }}" /> {{ $category->name }}</label>
-                    <br /> <br> <br>
-                @endforeach
-            </div>
-
-
-
-            <div class="filter-group">
-                <div class="filter-header">
-                    <h3 style="font-family: 'Playfair Display', serif;">Price Range</h3>
-                </div>
-                <input type="range" id="priceMin" min="0" max="1000" value="0" />
-                <input type="range" id="priceMax" min="0" max="1000" value="1000" />
-                <p>JD<span id="minPriceLabel">0</span> - JD<span id="maxPriceLabel">1000</span></p>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="product-section">
-            <div class="mobile-filters">
-                <button class="filter-toggle-btn" onclick="toggleMobileFilters()">Show Filters</button>
-                <div id="mobileFilterContent" class="hidden">
-                    <!-- Filter HTML can be cloned from Sidebar -->
-                </div>
-            </div>
-
-            <div class="top-controls">
-                <p><span id="productCount">0</span> products</p>
-                <div class="sort-dropdown">
-                    <button onclick="toggleSortMenu()">Sort By</button>
-                    <div class="sort-menu" id="sortMenu">
-                        <button onclick="sortProducts('newest')">Newest</button>
-                        <button onclick="sortProducts('price-low-high')">Price: Low to High</button>
-                        <button onclick="sortProducts('price-high-low')">Price: High to Low</button>
-                        <button onclick="sortProducts('popularity')">Popularity</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid" id="productGrid">
-
-            </div>
-        </main>
-
-
-    </div>
-    <hr>
-    <!--footer-->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <!-- Brand Column -->
-                <div>
-                    <h2 class="footer-title">Merath</h2>
-                    <p class="footer-desc">
-                        Discover exquisite art pieces for your home that blend timeless craftsmanship with modern
-                        aesthetics.
-                    </p>
-                    <div class="footer-icons">
-                        <a href="#" class="footer-icon">📸</a>
-                        <a href="#" class="footer-icon">📘</a>
-                        <a href="#" class="footer-icon">🐦</a>
-                        <a href="#" class="footer-icon">✉️</a>
-                    </div>
-                </div>
-
-                <!-- Shop Column -->
-                <div>
-                    <h3 class="footer-heading">Shop</h3>
-                    <ul class="footer-links">
-                        <li><a href="/shop">All Products</a></li>
-                        <li><a href="/shop?category=Vases">Vases</a></li>
-                        <li><a href="/shop?category=Sculptures">Sculptures</a></li>
-                        <li><a href="/shop?category=Bowls">Bowls</a></li>
-                        <li><a href="/shop?category=Home Accessories">Home Accessories</a></li>
-                    </ul>
-                </div>
-
-                <!-- Info Column -->
-                <div>
-                    <h3 class="footer-heading">Information</h3>
-                    <ul class="footer-links">
-                        <li><a href="/about">About Us</a></li>
-                        <li><a href="/shipping">Shipping & Returns</a></li>
-                        <li><a href="/privacy">Privacy Policy</a></li>
-                        <li><a href="/terms">Terms & Conditions</a></li>
-                        <li><a href="/faq">FAQ</a></li>
-                    </ul>
-                </div>
-
-                <!-- Newsletter Column -->
-                <div>
-                    <h3 class="footer-heading">Join Our Family on Instagram</h3>
-                    <p class="footer-desc">Follow to track updates on new collections and special offers.</p>
-                    <form method="POST" action="#">
-                        @csrf
-                        <div class="footer-form">
-                            <input type="email" name="email" placeholder="Merath" required value="@Merath"
-                                class="footer-input" />
-                            <button type="submit" class="footer-button">Follow</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Bottom Bar -->
-            <div class="footer-bottom">
-                <p>&copy; {{ date('Y') }} Merath. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-
     <script>
-        const csrfToken = '{{ csrf_token() }}'; // server renders this value
-
-        let minPrice = 0;
-        let maxPrice = 1000;
-        const sampleProducts = @json($products);
-        console.log(sampleProducts);
-
-        function renderProducts(products) {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = '';
-
-            products.forEach(product => {
-                const imageUrl = `/storage/${product.image}`;
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.innerHTML = `
-    <a href="/product/${product.id}">
-        <h4 class="product-title">${product.name}</h4>
-        <img src="${imageUrl}" alt="${product.name}" class="product-image">
-    </a>
-    <p class="product-category">${product.category.name}</p>
-    <p class="product-price">${product.price} JD</p>
-    <form action="/wishlist/add/${product.id}" method="POST">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <button type="submit" class="btn-wishlist">Add to Wishlist ❤️</button>
-    </form>
-`;
-
-                grid.appendChild(card);
+        function showTab(tabId) {
+            ['description', 'details', 'shipping'].forEach(id => {
+                document.getElementById('tab-' + id).style.display = id === tabId ? 'block' : 'none';
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active-tab'));
+                document.querySelector(`.tab-button[onclick="showTab('${tabId}')"]`).classList.add('active-tab');
             });
-
-            document.getElementById('productCount').innerText = products.length;
         }
-
-        function toggleSortMenu() {
-            document.getElementById('sortMenu').classList.toggle('active');
-        }
-
-        function toggleMobileFilters() {
-            document.getElementById('mobileFilterContent').classList.toggle('hidden');
-        }
-
-        function sortProducts(type) {
-            let sorted = [...sampleProducts];
-            if (type === 'price-low-high') {
-                sorted.sort((a, b) => a.price - b.price);
-            } else if (type === 'price-high-low') {
-                sorted.sort((a, b) => b.price - a.price);
-            } else if (type === 'newest') {
-                sorted.reverse(); // assuming newest is last
-            }
-            renderProducts(sorted);
-            toggleSortMenu();
-        }
-
-        window.onload = () => {
-            renderProducts(sampleProducts);
-            document.getElementById('priceMin').addEventListener('input', (e) => {
-                document.getElementById('minPriceLabel').innerText = e.target.value;
-            });
-
-            document.getElementById('priceMax').addEventListener('input', (e) => {
-                document.getElementById('maxPriceLabel').innerText = e.target.value;
-            });
-        };
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('/price-range')
-                .then(response => response.json())
-                .then(data => {
-                    const min = data.min;
-                    const max = data.max;
-
-                    const priceMin = document.getElementById('priceMin');
-                    const priceMax = document.getElementById('priceMax');
-                    const minPriceLabel = document.getElementById('minPriceLabel');
-                    const maxPriceLabel = document.getElementById('maxPriceLabel');
-
-                    priceMin.min = min;
-                    priceMin.max = max;
-                    priceMin.value = min;
-
-                    priceMax.min = min;
-                    priceMax.max = max;
-                    priceMax.value = max;
-
-                    minPriceLabel.textContent = min;
-                    maxPriceLabel.textContent = max;
-
-                    // Optional: add event listeners to update labels on input
-                    priceMin.addEventListener('input', () => {
-                        minPriceLabel.textContent = priceMin.value;
-                    });
-
-                    priceMax.addEventListener('input', () => {
-                        maxPriceLabel.textContent = priceMax.value;
-                    });
-                });
-        });
-    </script>
-    <script>
-        fetch('/price-range')
-            .then(response => response.json())
-            .then(data => {
-                minPrice = data.min;
-                maxPrice = data.max;
-
-                const priceMin = document.getElementById('priceMin');
-                const priceMax = document.getElementById('priceMax');
-                const minPriceLabel = document.getElementById('minPriceLabel');
-                const maxPriceLabel = document.getElementById('maxPriceLabel');
-
-                priceMin.min = minPrice;
-                priceMin.max = maxPrice;
-                priceMin.value = minPrice;
-
-                priceMax.min = minPrice;
-                priceMax.max = maxPrice;
-                priceMax.value = maxPrice;
-
-                minPriceLabel.textContent = minPrice;
-                maxPriceLabel.textContent = maxPrice;
-            });
-
-        function getSelectedCategories() {
-            const checkboxes = document.querySelectorAll('.filter-category:checked');
-            return Array.from(checkboxes).map(cb => cb.value);
-        }
-
-        function getSelectedPriceRange() {
-            const min = parseFloat(document.getElementById('priceMin').value);
-            const max = parseFloat(document.getElementById('priceMax').value);
-            return {
-                min,
-                max
-            };
-        }
-
-        function filterProducts() {
-            const selectedCategories = getSelectedCategories();
-            const {
-                min,
-                max
-            } = getSelectedPriceRange();
-
-            const filtered = sampleProducts.filter(product => {
-                const inCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category
-                    .name);
-                const inPrice = product.price >= min && product.price <= max;
-                return inCategory && inPrice;
-            });
-
-            renderProducts(filtered);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Apply filtering when category checkboxes change
-            document.querySelectorAll('.filter-category').forEach(cb => {
-                cb.addEventListener('change', filterProducts);
-            });
-
-            // Apply filtering when price range changes
-            document.getElementById('priceMin').addEventListener('input', filterProducts);
-            document.getElementById('priceMax').addEventListener('input', filterProducts);
-        });
-        document.getElementById('resetFiltersBtn').addEventListener('click', function() {
-            // Reset all category checkboxes
-            document.querySelectorAll('.filter-category').forEach(cb => {
-                cb.checked = false;
-            });
-
-            // Reset price range to min and max
-            document.getElementById('priceMin').value = minPrice; // Use dynamic minPrice
-            document.getElementById('priceMax').value = maxPrice; // Use dynamic maxPrice
-            document.getElementById('minPriceLabel').innerText = minPrice;
-            document.getElementById('maxPriceLabel').innerText = maxPrice;
-
-            // Re-filter to show all products
-            filterProducts();
-        });
     </script>
 </body>
 

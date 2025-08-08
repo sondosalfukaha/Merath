@@ -12,7 +12,7 @@ class ShopController extends Controller
         // Fetch all products, optionally with pagination
         $products = Product::where('stock', '>', 0)->with('category')->get();
         //$products = Product::all(); // or any filtered query
-            $categories = Category::all(); // fetch all categories from the DB
+        $categories = Category::all(); // fetch all categories from the DB
 
 
         return view('shop', compact('products','categories'));

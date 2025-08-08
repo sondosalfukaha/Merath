@@ -8,6 +8,13 @@ use App\Models\Category;
 
 class ProductController extends Controller
 {
+    //details.blade.php
+    public function show($id)
+{
+    $product = Product::with('category')->findOrFail($id);
+    return view('details', compact('product'));
+}
+
     public function getPriceRange()
 {
     $min = Product::min('price');
@@ -34,6 +41,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image' => 'nullable|image|max:2048',
+            'description' => 'nullable|string',
 
 
         ]);
@@ -53,6 +61,7 @@ class ProductController extends Controller
             'image' => $imagePath,
             'is_featured' => $request->has('is_featured'),
             'is_best_seller' => $request->has('is_best_seller'),
+            'description' => $request->description,
         ]);
 
         return redirect()->route('admin.dashboard')->with('success', 'Product added successfully.');
@@ -68,6 +77,7 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer',
             'image' => 'nullable|image|max:2048',
+            'description' => 'nullable|string',
         ]);
 
         if ($request->hasFile('image')) {

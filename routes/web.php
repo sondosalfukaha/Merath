@@ -21,7 +21,9 @@ Route::get('/', function () {
 
     $bestSellers = Product::where('is_best_seller', true)->inRandomOrder()->take(6)->get();
     $wishlists = Wishlist::all();
-    return view('welcome', compact('categories','products','featuredProducts', 'bestSellers','wishlists'));
+    $randomProduct = Product::inRandomOrder()->first();
+
+    return view('welcome', compact('categories','products','featuredProducts', 'bestSellers','wishlists','randomProduct'));
 });
 
 Route::get('/shop', function () {
@@ -75,4 +77,10 @@ Route::middleware('web')->group(function () {
     Route::post('/wishlist/add/{product_id}', [WishlistController::class, 'add'])->name('wishlist.add');
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
     Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'remove'])->name('wishlist.remove');
+    Route::delete('/wishlist/clear', [WishlistController::class, 'clearAll'])->name('wishlist.clear');
+
 });
+
+    //details.blade.php
+    Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+

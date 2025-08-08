@@ -290,6 +290,7 @@
                                             <th>Category</th>
                                             <th>Price</th>
                                             <th>Stock</th>
+                                            <th>Description</th>
                                             <th>Featured</th>
                                             <th>Best Seller</th>
                                             <th>Actions</th>
@@ -312,6 +313,7 @@
                                                     <td>{{ $product->category->name }}</td>
                                                     <td>JD{{ $product->price }}</td>
                                                     <td>{{ $product->stock }}</td>
+                                                    <td>{{ $product->description }}</td>
                                                     <td>
                                                         @if ($product->is_featured)
                                                             ✅
@@ -327,6 +329,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
+                                                        <!--
                                                         <button
                                                             class="btn btn-sm btn-outline-secondary edit-product-btn"
                                                             data-id="{{ $product->id }}"
@@ -335,7 +338,7 @@
                                                             data-price="{{ $product->price }}"
                                                             data-stock="{{ $product->stock }}" data-bs-toggle="modal"
                                                             data-bs-target="#editProductModal">Edit</button>
-
+                                                        -->
                                                         <form method="POST"
                                                             action="{{ route('products.destroy', $product) }}"
                                                             style="display:inline-block;">
@@ -578,9 +581,12 @@
 
                                     <input type="checkbox" name="is_best_seller" id="is_best_seller">
                                     <label for="is_best_seller">Best Seller</label>
-
                                 </div>
-
+                                <div class="mb-3">
+                                    <label for="productDescription" class="form-label">Product Description</label>
+                                    <input type="text" name="description" class="form-control mb-2"
+                                        id="productDescription" required>
+                                </div>
                             </div>
                         </form>
                     </div>
