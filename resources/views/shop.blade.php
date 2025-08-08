@@ -116,9 +116,9 @@
 
         .product-card {
             background: white;
-            padding: 1rem;
-            border: 1px solid #ddd;
+            padding: 0rem;
             text-align: center;
+            position: relative;
         }
 
         /* Mobile Filters */
@@ -142,6 +142,37 @@
 
         .hidden {
             display: none;
+        }
+
+        .product-label {
+            position: absolute;
+            top: 5px;
+            left: 0;
+            padding: 5px 30px;
+            font-size: 13px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .product-label.best-seller {
+            background: #C4A35A;
+            /* gold */
+        }
+
+        .product-label.featured {
+            background: #000;
+            /* black */
+        }
+
+        .product-card2::after {
+            content: "Best Seller";
+            position: absolute;
+            top: 5px;
+            left: 0;
+            background: #C4A35A;
+            color: #fff;
+            padding: 5px 30px;
+            font-size: 13px;
         }
     </style>
     <style>
@@ -660,11 +691,11 @@
         .product-card {
             min-width: 280px;
             max-width: 280px;
-            background: white;
-            border-radius: 8px;
+
+            position: relative;
             overflow: hidden;
             scroll-snap-align: start;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
         }
 
         .product-card img {
@@ -679,7 +710,7 @@
 
         .product-card .info h3 {
             font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+
         }
 
         .product-card .info p {
@@ -687,7 +718,8 @@
             color: #555;
         }
 
-        < !-- Style section --><style>.scrollbar-hide::-webkit-scrollbar {
+
+        .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }
 
@@ -716,253 +748,7 @@
             opacity: 1;
         }
 
-        .essence-section {
-            padding-top: 4rem;
-            padding-bottom: 4rem;
-        }
-
-        .essence-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
-
-        .essence-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            align-items: center;
-            margin-bottom: 4rem;
-        }
-
-        @media (min-width: 768px) {
-            .essence-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .essence-image {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-        }
-
-        .essence-text {
-            padding: 1.5rem;
-        }
-
-        .essence-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.875rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .essence-paragraph {
-            color: #4B5563;
-            /* Tailwind's gray-600 */
-            margin-bottom: 1.5rem;
-        }
-
-        .essence-button {
-            display: inline-block;
-            background-color: #C4A35A;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .essence-button:hover {
-            background-color: #b3934f;
-        }
-
-        .featured-section {
-            background-color: white;
-            padding-top: 4rem;
-            padding-bottom: 4rem;
-            max-width: 1140px;
-            margin: 0 auto;
-            padding: 0 1rem;
-
-        }
-
-        .featured-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
-
-        }
-
-        .featured-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .featured-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.875rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .featured-description {
-            color: #4B5563;
-            /* Tailwind's gray-600 */
-            max-width: 640px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .featured-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        @media (min-width: 768px) {
-            .featured-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        .featured-card {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .featured-image {
-            width: 100%;
-            height: 24rem;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .group:hover .group-hover-scale {
-            transform: scale(1.05);
-        }
-
-        .featured-overlay {
-            position: absolute;
-            inset: 0;
-            background-color: rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 1.5rem;
-            transition: opacity 0.3s ease;
-        }
-
-        .group:hover .featured-overlay {
-            opacity: 1;
-        }
-
-        .featured-name {
-            color: white;
-            font-weight: 500;
-            font-size: 1.25rem;
-        }
-
-        .featured-price {
-            color: white;
-            opacity: 0.8;
-            margin-bottom: 1rem;
-        }
-
-        .featured-button {
-            display: inline-block;
-            background-color: white;
-            color: #111827;
-            /* gray-900 */
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-decoration: none;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .featured-button:hover {
-            background-color: #C4A35A;
-            color: white;
-        }
-
-        .newsletter-section {
-            padding: 4rem 1rem;
-            background-color: #f9fafb;
-        }
-
-        .newsletter-section .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mb-12 {
-            margin-bottom: 3rem;
-        }
-
-        .newsletter-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.875rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .newsletter-subtitle {
-            color: #4b5563;
-            max-width: 32rem;
-            margin: 0 auto;
-        }
-
-        .form-wrapper {
-            max-width: 28rem;
-            margin: 0 auto;
-        }
-
-        .newsletter-form {
-            display: flex;
-            gap: 0;
-        }
-
-        .newsletter-input {
-            flex: 1;
-            padding: 0.75rem 1rem;
-            border: 1px solid #d1d5db;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .newsletter-input:focus {
-            border-color: #c4a35a;
-            box-shadow: 0 0 0 1px #c4a35a;
-        }
-
-        .newsletter-button {
-            background-color: #c4a35a;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .newsletter-button:hover {
-            background-color: #b3934f;
-        }
-
-        <style>.footer {
+        .footer {
             background-color: #f9fafb;
             padding-top: 4rem;
             padding-bottom: 2rem;
@@ -1081,31 +867,6 @@
             font-size: 0.875rem;
         }
 
-        .shop-wrapper {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-        }
-
-        .sidebar {
-            position: sticky;
-            top: 20px;
-            width: 250px;
-            height: fit-content;
-            background: #fff;
-            border: 1px solid #eee;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .product-area {
-            flex: 1;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
         .product-image-wrapper {
             position: relative;
             width: 100%;
@@ -1148,6 +909,7 @@
             max-width: 300px;
             margin: 0 auto;
             text-align: center;
+            position: relative;
         }
 
         .product-image-wrapper {
@@ -1200,7 +962,112 @@
             color: white;
         }
     </style>
+    <style>
+        .product-card {
+            min-width: 280px;
+            text-align: center;
+            overflow: hidden;
+            scroll-snap-align: start;
+            position: relative;
 
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.05);
+        }
+
+
+        .product-card .info {
+            padding: 1rem;
+        }
+
+        .product-card .info h3 {
+            font-family: "Playfair Display", serif;
+
+            font-size: 1.1rem;
+
+        }
+
+        .product-card .info p {
+            font-size: 0.95rem;
+            font-family: "Playfair Display", serif;
+        }
+
+        .info .getcolorOfprice {
+            color: #b3934f
+        }
+
+        .info .categoryname {
+            color: #4a4a4a;
+        }
+
+        .product-card1 {
+            position: relative;
+        }
+
+        .product-card1::after {
+            content: "New";
+            position: absolute;
+            top: 5px;
+            left: 0;
+            background: #000;
+            color: #fff;
+            padding: 5px 30px;
+            font-size: 13px;
+        }
+
+        .product-card2 {
+            position: relative;
+        }
+
+        .product-image-container {
+            position: relative;
+            width: 100%;
+            height: auto;
+        }
+
+        .icon-overlay {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 6px;
+            font-size: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .product-card2::after {
+            content: "Best Seller";
+            position: absolute;
+            top: 5px;
+            left: 0;
+            background: #C4A35A;
+            color: #fff;
+            padding: 5px 30px;
+            font-size: 13px;
+        }
+    </style>
 </head>
 
 <body>
@@ -1390,18 +1257,43 @@
                 const imageUrl = `/storage/${product.image}`;
                 const card = document.createElement('div');
                 card.className = 'product-card';
+                let labelHTML = "";
+                if (product.is_best_seller) {
+                    labelHTML = `<div class="product-label best-seller">Best Seller</div>`;
+                } else if (product.is_featured) {
+                    labelHTML = `<div class="product-label featured">Featured</div>`;
+                }
+
                 card.innerHTML = `
-    <a href="/product/${product.id}">
-        <h4 class="product-title">${product.name}</h4>
-        <img src="${imageUrl}" alt="${product.name}" class="product-image">
-    </a>
-    <p class="product-category">${product.category.name}</p>
-    <p class="product-price">${product.price} JD</p>
-    <form action="/wishlist/add/${product.id}" method="POST">
-        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-        <button type="submit" class="btn-wishlist">Add to Wishlist ❤️</button>
-    </form>
+    <div class="produt-card2">
+        <a href="/product/${product.id}">
+            <div class="product-image-container">
+                ${labelHTML}
+                <img src="${imageUrl}" alt="${product.name}">
+            </div>
+        </a>
+        <div class="info">
+            <p class="categoryname">${product.category.name}</p>
+            <p class="getcolorOfprice">${product.price} JD</p>
+        </div>
+        
+        <div class="icon-overlay">               
+            <form action="/wishlist/add/${product.id}" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="icon-btn">
+                    <i class="fa-regular fa-heart" style="color: #b3934f"></i>
+                </button>
+            </form>
+            <form action="" method="POST" style="display:inline;">
+                @csrf
+                <button type="submit" class="icon-btn">
+                    <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
+                </button>
+            </form>
+        </div>
+    </div>
 `;
+
 
                 grid.appendChild(card);
             });
