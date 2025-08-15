@@ -1192,9 +1192,13 @@
                     </div>
 
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <button type="submit" class="button-primary">
-                            Add to Cart
-                        </button>
+                        <form action="/cart/add" method="POST" style="display:inline;">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                            <button type="submit" class="button-primary">Add to cart</button>
+
+                        </form>
 
                         <!-- Wishlist Button -->
                         <form method="POST" action="">

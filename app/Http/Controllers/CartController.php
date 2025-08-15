@@ -59,4 +59,7 @@ class CartController extends Controller
         Cart::where('user_id', Auth::id())->delete();
         return back()->with('success', 'Cart cleared');
     }
+
+
+
 }

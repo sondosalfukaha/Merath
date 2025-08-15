@@ -397,9 +397,11 @@
                         <i class="fas fa-heart"></i>
                     </a>
                 @endauth
-                <div class="icon cart-icon" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge" id="cart-count">0</span>
+                <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
+                    <a href="/cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cart-count">{{ $cartItems->count() }}</span>
+                    </a>
                 </div>
                 <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
             </div>

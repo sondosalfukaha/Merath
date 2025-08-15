@@ -346,8 +346,8 @@
             color: white;
             font-size: 12px;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 13px;
+            height: 17px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1068,6 +1068,7 @@
             font-size: 13px;
         }
     </style>
+
 </head>
 
 <body>
@@ -1080,7 +1081,7 @@
             <!-- Desktop Navigation -->
             <nav class="desktop">
                 <a href="/">Home</a>
-                <a href="/shop">Shop</a>
+                <a href="/shop" style="color: #b3934f;">Shop</a>
                 <a href="#">Collections</a>
                 <a href="#">About</a>
                 <a href="#">Contact</a>
@@ -1088,13 +1089,16 @@
 
             <!-- Icons -->
             <div class="icons">
-                <span class="icon"><i class="fas fa-search"></i></span>
                 <a href="/register" class="icon"><i class="fas fa-user"></i></a>
-                <a href="#" class="icon"><i class="fas fa-heart"></i></a>
+                @auth
+                    <a href="{{ route('wishlist') }}"class="icon">
+                        <i class="fas fa-heart"></i>
+                    </a>
+                @endauth
                 <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
                     <a href="/cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge" id="cart-count"></span>
+                        <span class="cart-badge" id="cart-count">{{ $cartItems->count() }}</span>
                     </a>
                 </div>
                 <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
@@ -1105,8 +1109,8 @@
 
         <!-- Mobile Navigation -->
         <nav class="mobile" id="mobileMenu">
-            <a href="#">Home</a>
-            <a href="#">Shop</a>
+            <a href="/">Home</a>
+            <a href="/shop" style="color: #b3934f;">Shop</a>
             <a href="#">Collections</a>
             <a href="#">About</a>
             <a href="#">Contact</a>
@@ -1134,7 +1138,7 @@
                 @foreach ($categories as $category)
                     <label style="font-family: 'Playfair Display', serif;"><input type="checkbox"
                             class="filter-category" value="{{ $category->name }}" /> {{ $category->name }}</label>
-                    <br /> <br> <br>
+                    <br>
                 @endforeach
             </div>
 
@@ -1142,12 +1146,62 @@
 
             <div class="filter-group">
                 <div class="filter-header">
-                    <h3 style="font-family: 'Playfair Display', serif;">Price Range</h3>
+                    <div class="filter-header">
+                        <h3 style="font-family:     font-family: 'Playfair Display', serif;">Price Range</h3>
+                    </div>
                 </div>
-                <input type="range" id="priceMin" min="0" max="1000" value="0" />
-                <input type="range" id="priceMax" min="0" max="1000" value="1000" />
-                <p>JD<span id="minPriceLabel">0</span> - JD<span id="maxPriceLabel">1000</span></p>
+                <div class="slider-container">
+                    <input type="range" id="priceMin" min="0" max="1000" value="0" />
+                    <input type="range" id="priceMax" min="0" max="1000" value="1000" />
+                    <p>JD<span id="minPriceLabel">0</span> - JD<span id="maxPriceLabel">1000</span></p>
+                </div>
+
             </div>
+            <style>
+                .filter-header h3 {
+                    font-family: 'Playfair Display', serif;
+                    font-size: 18px;
+                    margin-bottom: 10px;
+                    color: #333;
+                }
+
+                input[type="range"] {
+                    -webkit-appearance: none;
+
+                    height: 6px;
+                    border-radius: 5px;
+                    background: #ddd;
+                    outline: none;
+                    margin: 10px 0;
+                }
+
+                input[type="range"]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background: #b3934f;
+                    cursor: pointer;
+                    border: 2px solid #fff;
+                }
+
+                input[type="range"]::-moz-range-thumb {
+
+                    border-radius: 50%;
+                    background: #b3934f;
+                    cursor: pointer;
+                    border: 2px solid #fff;
+                }
+
+                p {
+                    font-family: 'Playfair Display', serif;
+
+                    margin-top: 5px;
+                    color: #555;
+                    font-size: 16px;
+                }
+            </style>
+
         </aside>
 
         <!-- Main Content -->
@@ -1184,6 +1238,7 @@
     </div>
     <hr>
     <!--footer-->
+
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-grid">
@@ -1207,10 +1262,10 @@
                     <h3 class="footer-heading">Shop</h3>
                     <ul class="footer-links">
                         <li><a href="/shop">All Products</a></li>
-                        <li><a href="/shop?category=Vases">Vases</a></li>
-                        <li><a href="/shop?category=Sculptures">Sculptures</a></li>
-                        <li><a href="/shop?category=Bowls">Bowls</a></li>
-                        <li><a href="/shop?category=Home Accessories">Home Accessories</a></li>
+                        @foreach ($categories as $category)
+                            <li><a href="/shop">{{ $category->name }}</a></li>
+                        @endforeach
+
                     </ul>
                 </div>
 
@@ -1230,14 +1285,14 @@
                 <div>
                     <h3 class="footer-heading">Join Our Family on Instagram</h3>
                     <p class="footer-desc">Follow to track updates on new collections and special offers.</p>
-                    <form method="POST" action="#">
-                        @csrf
-                        <div class="footer-form">
-                            <input type="email" name="email" placeholder="Merath" required value="@Merath"
-                                class="footer-input" />
-                            <button type="submit" class="footer-button">Follow</button>
-                        </div>
-                    </form>
+
+                    @csrf
+                    <div class="footer-form">
+                        <a href="https://www.instagram.com/merathart/" target="_blank">
+                            <button type="submit" class="footer-button">Follow Us</button>
+                        </a>
+                    </div>
+
                 </div>
             </div>
 
@@ -1247,7 +1302,7 @@
             </div>
         </div>
     </footer>
-
+    <!--footer-->
 
     <script>
         const csrfToken = '{{ csrf_token() }}'; // server renders this value
@@ -1274,34 +1329,35 @@
                 }
 
                 card.innerHTML = `
-    <div class="produt-card2">
-        <a href="/product/${product.id}">
-            <div class="product-image-container">
-                ${labelHTML}
-                <img src="${imageUrl}" alt="${product.name}">
-            </div>
-        </a>
-        <div class="info">
-            <p class="categoryname">${product.category.name}</p>
-            <p class="getcolorOfprice">${product.price} JD</p>
-        </div>
+            <div class="produt-card2">
+                <a href="/product/${product.id}">
+                    <div class="product-image-container">
+                        ${labelHTML}
+                        <img src="${imageUrl}" alt="${product.name}">
+                    </div>
+                </a>
+                <div class="info">
+                    <p class="categoryname">${product.category.name}</p>
+                    <p class="getcolorOfprice">${product.price} JD</p>
+                </div>
 
-        <div class="icon-overlay">
-            <form action="/wishlist/add/${product.id}" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" class="icon-btn">
-                    <i class="fa-regular fa-heart" style="color: #b3934f"></i>
-                </button>
-            </form>
-            <form action="/cart" method="POST" style="display:inline;">
-                @csrf
-                <button type="submit" class="icon-btn">
-                    <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-`;
+                <div class="icon-overlay">
+                    <form action="/wishlist/add/${product.id}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="icon-btn">
+                            <i class="fa-regular fa-heart" style="color: #b3934f"></i>
+                        </button>
+                    </form>
+                    <form action="/cart/add" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="icon-btn">
+                            <input type="hidden" name="product_id" value="${product.id}">
+                            <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        `;
 
 
                 grid.appendChild(card);
@@ -1457,6 +1513,18 @@
             // Re-filter to show all products
             filterProducts();
         });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Clone filters into mobile filter container
+            const sidebarFilters = document.querySelector('#filterSidebar').innerHTML;
+            document.getElementById('mobileFilterContent').innerHTML = sidebarFilters;
+        });
+
+        function toggleMobileFilters() {
+            const mobileFilter = document.getElementById('mobileFilterContent');
+            mobileFilter.classList.toggle('hidden');
+        }
     </script>
 </body>
 

@@ -1196,7 +1196,7 @@
 
             <!-- Desktop Navigation -->
             <nav class="desktop">
-                <a href="/">Home</a>
+                <a href="/" style="color: #b3934f;">Home</a>
                 <a href="/shop">Shop</a>
                 <a href="/collection">Collections</a>
                 <a href="/about">About</a>
@@ -1342,8 +1342,9 @@
                                     </form>
                                     <form action="/cart/add" method="POST" style="display:inline;">
                                         @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <button type="submit" class="icon-btn">
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+
                                             <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
                                         </button>
                                     </form>
@@ -1424,8 +1425,9 @@
                                                 <!-- outline -->
                                             </button>
                                         </form>
-                                        <form action="" method="POST" style="display:inline;">
+                                        <form action="/cart/add" method="POST" style="display:inline;">
                                             @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
                                             <button type="submit" class="icon-btn">
                                                 <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
                                             </button>
@@ -1465,7 +1467,7 @@
                             <div class="featured-overlay">
                                 <h3 class="featured-name">{{ $product->name }}</h3>
                                 <p class="featured-price">JOD {{ $product->price }}</p>
-                                <a href="/product/1" class="featured-button">View Details</a>
+                                <a href="/product/{{ $product->id }}" class="featured-button">View Details</a>
                             </div>
 
                         </div>
@@ -1521,10 +1523,10 @@
                         <h3 class="footer-heading">Shop</h3>
                         <ul class="footer-links">
                             <li><a href="/shop">All Products</a></li>
-                            <li><a href="/shop?category=Vases">Vases</a></li>
-                            <li><a href="/shop?category=Sculptures">Sculptures</a></li>
-                            <li><a href="/shop?category=Bowls">Bowls</a></li>
-                            <li><a href="/shop?category=Home Accessories">Home Accessories</a></li>
+                            @foreach ($categories as $category)
+                                <li><a href="/shop">{{ $category->name }}</a></li>
+                            @endforeach
+
                         </ul>
                     </div>
 
@@ -1544,14 +1546,14 @@
                     <div>
                         <h3 class="footer-heading">Join Our Family on Instagram</h3>
                         <p class="footer-desc">Follow to track updates on new collections and special offers.</p>
-                        <form method="POST" action="https://www.instagram.com/merathart/">
-                            @csrf
-                            <div class="footer-form">
-                                <input type="text" name="email" placeholder="Merath" required
-                                    value="@Merathart" class="footer-input" />
-                                <button type="submit" class="footer-button">Follow</button>
-                            </div>
-                        </form>
+
+                        @csrf
+                        <div class="footer-form">
+                            <a href="https://www.instagram.com/merathart/" target="_blank">
+                                <button type="submit" class="footer-button">Follow Us</button>
+                            </a>
+                        </div>
+
                     </div>
                 </div>
 

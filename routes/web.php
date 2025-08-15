@@ -12,7 +12,7 @@ use App\Http\Controllers\WishlistController;
 use App\Models\Wishlist;
 use App\Http\Controllers\CartController;
 use App\Models\Cart;
-
+use App\Http\Controllers\OrderController;
 
 
 Route::get('/', function () {
@@ -96,3 +96,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
     Route::delete('/cart/clear', [CartController::class, 'clear']);
 });
+
+
+
+Route::get('/place-order', [OrderController::class, 'showCheckout'])->name('checkout');
+Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('place.order');
+
+
+
+
+
+

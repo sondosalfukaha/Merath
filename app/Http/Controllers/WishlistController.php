@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
-
+use App\Models\Cart;
 class WishlistController extends Controller
 {
     public function add($product_id)
@@ -37,8 +37,10 @@ class WishlistController extends Controller
         }
         $wishlists = Wishlist::where('user_id', Auth::id())->get();
         $products = Product::all();//test//
-
-        return view('wishlist', compact('wishlists','products'));//products - > test
+        $cartItems = auth()->check()
+        ? \App\Models\Cart::where('user_id', auth()->id())->get()
+        : collect(); // empty collection if not logged in
+        return view('wishlist', compact('wishlists','products','cartItems'));//products - > test
     }
 
     public function remove($id)

@@ -236,10 +236,17 @@
         .col-qty button.qty-btn {
             padding: 0.25rem 0.5rem;
             margin: 0 0.25rem;
-            background-color: #0b2c55;
-            color: #fff;
+
+            color: #000;
             border: none;
             cursor: pointer;
+            transition: ease-in-out .3s;
+        }
+
+        .col-qty button.qty-btn:hover {
+            color: #fff;
+            background: #666;
+            scale: 110%;
         }
 
         .col-remove .remove-btn {
@@ -247,7 +254,14 @@
             border: none;
             font-size: 1.2rem;
             cursor: pointer;
+            color: #C4A35A;
+            font-size: 25px;
+            transition: ease-in-out .3s;
+        }
+
+        .col-remove .remove-btn:hover {
             color: red;
+            scale: 110%
         }
 
         .cart-summary {
@@ -306,9 +320,11 @@
                         <i class="fas fa-heart"></i>
                     </a>
                 @endauth
-                <div class="icon cart-icon" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge" id="cart-count">0</span>
+                <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
+                    <a href="/cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cart-count">{{ $cartItems->count() }}</span>
+                    </a>
                 </div>
                 <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
             </div>
@@ -361,10 +377,13 @@
                     </div>
 
                     <div class="col col-qty">
-                        <!--<button class="qty-btn">-</button>-->
-                        <span>{{ $item->quantity }}</span>
-                        <!--<button class="qty-btn">+</button>-->
+                        <!--<button class="qty-btn decrease" data-id="{{ $item->id }}">-</button>-->
+                        <span class="quantity" data-id="{{ $item->id }}">{{ $item->quantity }}</span>
+                        <!--<button class="qty-btn increase" data-id="{{ $item->id }}">+</button>-->
                     </div>
+
+
+
 
                     <div class="col col-remove">
                         <form method="POST" action="/cart/remove/{{ $item->id }}">
@@ -375,32 +394,32 @@
                     </div>
 
                     <div class="col col-price">
-                        ${{ $subtotal }}
+                        JD{{ $subtotal }}
                     </div>
                 </div>
             @endforeach
 
             <div class="cart-summary">
                 <div>Total Items: {{ $totalQty }}</div>
-                <div>Total Amount: ${{ $total }}</div>
+                <div>Total Amount: JD{{ $total }}</div>
                 <div class="cart-actions">
                     <form method="POST" action="/cart/clear">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn-clear">Clear Cart</button>
                     </form>
-                    <form method="POST" action="/order">
+                    <form method="POST" action="{{ route('place.order') }}">
                         @csrf
-                        @method('DELETE')
+                        @method('POST')
                         <button type="submit" class="btn-place">Place Order</button>
                     </form>
 
                 </div>
             </div>
+
+
         @endif
     </div>
-
-
 </body>
 
 </html>
