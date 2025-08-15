@@ -1182,10 +1182,11 @@
 </head>
 
 <a href="#" id="scrollToTop" title="Back to Top">
-        <i class="fa-solid fa-arrow-up"></i>
-    </a>
+    <i class="fa-solid fa-arrow-up"></i>
+</a>
+
 <body>
-    
+
 
     <!--Start NavBar-->
     <header>
@@ -1210,9 +1211,11 @@
                         <i class="fas fa-heart"></i>
                     </a>
                 @endauth
-                <div class="icon cart-icon" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge" id="cart-count">0</span>
+                <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
+                    <a href="/cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cart-count">{{ $cartItems->count() }}</span>
+                    </a>
                 </div>
                 <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
             </div>
@@ -1337,9 +1340,10 @@
                                             <!-- outline -->
                                         </button>
                                     </form>
-                                    <form action="" method="POST" style="display:inline;">
+                                    <form action="/cart/add" method="POST" style="display:inline;">
                                         @csrf
                                         <button type="submit" class="icon-btn">
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
                                             <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
                                         </button>
                                     </form>

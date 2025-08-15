@@ -1091,9 +1091,11 @@
                 <span class="icon"><i class="fas fa-search"></i></span>
                 <a href="/register" class="icon"><i class="fas fa-user"></i></a>
                 <a href="#" class="icon"><i class="fas fa-heart"></i></a>
-                <div class="icon cart-icon" onclick="toggleCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-badge" id="cart-count">2</span>
+                <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
+                    <a href="/cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-badge" id="cart-count"></span>
+                    </a>
                 </div>
                 <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
             </div>
@@ -1283,15 +1285,15 @@
             <p class="categoryname">${product.category.name}</p>
             <p class="getcolorOfprice">${product.price} JD</p>
         </div>
-        
-        <div class="icon-overlay">               
+
+        <div class="icon-overlay">
             <form action="/wishlist/add/${product.id}" method="POST" style="display:inline;">
                 @csrf
                 <button type="submit" class="icon-btn">
                     <i class="fa-regular fa-heart" style="color: #b3934f"></i>
                 </button>
             </form>
-            <form action="" method="POST" style="display:inline;">
+            <form action="/cart" method="POST" style="display:inline;">
                 @csrf
                 <button type="submit" class="icon-btn">
                     <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>

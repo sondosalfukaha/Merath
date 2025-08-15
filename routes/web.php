@@ -10,6 +10,9 @@ use App\Models\Product;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\WishlistController;
 use App\Models\Wishlist;
+use App\Http\Controllers\CartController;
+use App\Models\Cart;
+
 
 
 Route::get('/', function () {
@@ -22,12 +25,14 @@ Route::get('/', function () {
     $bestSellers = Product::where('is_best_seller', true)->inRandomOrder()->take(6)->get();
     $wishlists = Wishlist::all();
     $randomProduct = Product::inRandomOrder()->first();
+    $cartItems = Cart::where('user_id', Auth::id())->get();
 
-    return view('welcome', compact('categories','products','featuredProducts', 'bestSellers','wishlists','randomProduct'));
+    return view('welcome', compact('categories','products','featuredProducts', 'bestSellers','wishlists','randomProduct','cartItems'));
 });
 
 Route::get('/shop', function () {
-        return view('shop');
+    $cartItems = Cart::where('user_id', Auth::id())->get();
+        return view('shop',compact('cartItems'));
 });
 
 Route::get('/dashboard', function () {
@@ -84,3 +89,10 @@ Route::middleware('web')->group(function () {
     //details.blade.php
     Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 
+//cart
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart/add', [CartController::class, 'add']);
+    Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
+    Route::delete('/cart/clear', [CartController::class, 'clear']);
+});

@@ -462,8 +462,9 @@
                                 <p class="price">${{ $product->price }}</p>
 
                                 <div class="wishlist-actions">
-                                    <form action="#" method="POST">
+                                    <form action="/cart/add" method="POST">
                                         @csrf
+                                        <input type="hidden" name="product_id" value="{{ $wishlist->product_id }}">
                                         <button type="submit" class="btn-primary small">Add to Cart</button>
                                     </form>
 
