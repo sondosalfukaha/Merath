@@ -15,6 +15,7 @@ use App\Models\Cart;
 use App\Http\Controllers\OrderController;
 
 
+
 Route::get('/', function () {
     $categories = Category::all(); // fetch all categories from the DB
 
@@ -95,12 +96,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/add', [CartController::class, 'add']);
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
     Route::delete('/cart/clear', [CartController::class, 'clear']);
+    /////////////////////////////////////////////////////////////////////////////
+    Route::get('/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
+    Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('order.place');
+    Route::get('/order-success/{id}', [OrderController::class, 'success'])->name('order.success');
 });
-
-
-
-Route::get('/place-order', [OrderController::class, 'showCheckout'])->name('checkout');
-Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('place.order');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 
 
 

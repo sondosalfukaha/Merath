@@ -186,8 +186,9 @@
     <style>
         .cart-container {
             max-width: 1000px;
-            margin: 2rem auto;
-            padding: 1rem;
+            margin: 0 auto;
+            padding: 1.5rem;
+            /*box-shadow: 0 4px 8px #dcdcdc4f;*/
         }
 
         .cart-header,
@@ -196,16 +197,28 @@
             align-items: center;
             padding: 0.75rem 0;
             border-bottom: 1px solid #ddd;
+
+        }
+
+        .cart-item {
+            box-shadow: 0 4px 8px #dcdcdc4f;
+            transition: 0.3s ease-in;
+        }
+
+        .cart-item:hover {
+            scale: 102%;
         }
 
         .cart-header {
             font-weight: bold;
             text-transform: capitalize;
+
         }
 
         .col {
             flex: 1;
             text-align: center;
+
         }
 
         .col-product {
@@ -213,6 +226,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+
         }
 
         .col-product img {
@@ -236,17 +250,10 @@
         .col-qty button.qty-btn {
             padding: 0.25rem 0.5rem;
             margin: 0 0.25rem;
-
-            color: #000;
+            background-color: #0b2c55;
+            color: #fff;
             border: none;
             cursor: pointer;
-            transition: ease-in-out .3s;
-        }
-
-        .col-qty button.qty-btn:hover {
-            color: #fff;
-            background: #666;
-            scale: 110%;
         }
 
         .col-remove .remove-btn {
@@ -254,22 +261,18 @@
             border: none;
             font-size: 1.2rem;
             cursor: pointer;
-            color: #C4A35A;
-            font-size: 25px;
-            transition: ease-in-out .3s;
-        }
-
-        .col-remove .remove-btn:hover {
             color: red;
-            scale: 110%
         }
 
         .cart-summary {
-            display: flex;
-            justify-content: space-between;
-            padding: 1rem 0;
-            font-weight: bold;
+            background: #dcdcdc4f;
+            width: 25%;
+            padding: 10px;
+            margin-top: 10px;
+            box-shadow: 0 4px 8px #c4a35aaf;
         }
+
+
 
         .cart-actions {
             display: flex;
@@ -281,6 +284,8 @@
             padding: 0.5rem 1rem;
             border: none;
             cursor: pointer;
+            transition: 0.3s ease-in-out;
+            font-size: 15px;
         }
 
         .btn-clear {
@@ -288,15 +293,86 @@
             color: #fff;
         }
 
+        .btn-clear:hover {
+            opacity: 50%;
+        }
+
+        .btn-place:hover {
+            opacity: 50%;
+        }
+
         .btn-place {
             background-color: #C4A35A;
             color: #fff;
+        }
+    </style>
+    <style>
+        .checkout-tracker {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            max-width: 400px;
+            margin: 20px auto -39px auto;
+            /* centers horizontally */
+        }
+
+        .checkout-tracker::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            right: 20px;
+            height: 4px;
+            background-color: #ccc;
+            /* line between circles */
+            z-index: 0;
+            transform: translateY(-50%);
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step .circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ccc;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 5px;
+            transition: 0.3s;
+        }
+
+        .step.completed .circle {
+            background-color: #4CAF50;
+            /* green for completed */
+        }
+
+        .step.active .circle {
+            background-color: #b3934f;
+            /* current step */
+        }
+
+        .step .label {
+            font-size: 12px;
+            color: #555;
+            text-align: center;
         }
     </style>
     <title>Cart</title>
 </head>
 
 <body>
+    <!--Start NavBar-->
     <!--Start NavBar-->
     <header>
         <div class="container">
@@ -321,7 +397,7 @@
                     </a>
                 @endauth
                 <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
-                    <a href="/cart">
+                    <a href="/cart" style="text-decoration: none;">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-badge" id="cart-count">{{ $cartItems->count() }}</span>
                     </a>
@@ -342,6 +418,27 @@
         </nav>
     </header>
     <!--End NavBar-->
+    <!--End NavBar-->
+    @php
+        // currentStep can be 'cart', 'checkout', 'success'
+        $currentStep = $currentStep ?? 'cart';
+    @endphp
+
+    <div class="checkout-tracker">
+        <div class="step {{ $currentStep == 'cart' ? 'active' : ($currentStep != 'cart' ? 'completed' : '') }}">
+            <div class="circle">1</div>
+            <div class="label">Cart</div>
+        </div>
+        <div class="step {{ $currentStep == 'checkout' ? 'active' : ($currentStep == 'success' ? 'completed' : '') }}">
+            <div class="circle">2</div>
+            <div class="label">Checkout</div>
+        </div>
+        <div class="step {{ $currentStep == 'success' ? 'active' : '' }}">
+            <div class="circle">3</div>
+            <div class="label">Success</div>
+        </div>
+    </div>
+
     <div class="cart-container">
         <h2>Your Cart</h2>
 
@@ -349,10 +446,12 @@
             <p>Your cart is empty.</p>
         @else
             <div class="cart-header">
+
                 <span class="col col-product">Description</span>
                 <span class="col col-qty">Quantity</span>
-                <span class="col col-remove">Remove</span>
+
                 <span class="col col-price">Price</span>
+                <span class="col col-remove">Remove</span>
             </div>
 
             @php
@@ -368,7 +467,9 @@
                 @endphp
 
                 <div class="cart-item">
+
                     <div class="col col-product">
+
                         <img src="{{ asset('storage/' . $item->product->image) }}" alt="{{ $item->product->name }}">
                         <div class="product-info">
                             <h4>{{ $item->product->name }}</h4>
@@ -377,14 +478,16 @@
                     </div>
 
                     <div class="col col-qty">
-                        <!--<button class="qty-btn decrease" data-id="{{ $item->id }}">-</button>-->
-                        <span class="quantity" data-id="{{ $item->id }}">{{ $item->quantity }}</span>
-                        <!--<button class="qty-btn increase" data-id="{{ $item->id }}">+</button>-->
+                        <!--<button class="qty-btn">-</button>-->
+                        <span>{{ $item->quantity }}</span>
+                        <!--<button class="qty-btn">+</button>-->
                     </div>
 
 
 
-
+                    <div class="col col-price">
+                        JD{{ $subtotal }}
+                    </div>
                     <div class="col col-remove">
                         <form method="POST" action="/cart/remove/{{ $item->id }}">
                             @csrf
@@ -392,34 +495,31 @@
                             <button type="submit" class="remove-btn">×</button>
                         </form>
                     </div>
-
-                    <div class="col col-price">
-                        JD{{ $subtotal }}
-                    </div>
                 </div>
             @endforeach
 
             <div class="cart-summary">
-                <div>Total Items: {{ $totalQty }}</div>
-                <div>Total Amount: JD{{ $total }}</div>
+                <div style="margin-bottom:15px;">Total Items: {{ $totalQty }}</div>
+                <div style="margin-bottom:15px;">Total Amount: JD{{ $total }}</div>
                 <div class="cart-actions">
                     <form method="POST" action="/cart/clear">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn-clear">Clear Cart</button>
+                        <button type="submit" class="btn-clear">Clear Cart
+                            <i class="fa-solid fa-trash fa-sm"></i>
+                        </button>
                     </form>
-                    <form method="POST" action="{{ route('place.order') }}">
-                        @csrf
-                        @method('POST')
-                        <button type="submit" class="btn-place">Place Order</button>
-                    </form>
+                    <a href="{{ route('order.checkout') }}" class="btn-place"
+                        style="text-decoration: none; font-weight:100;">Process To</a>
+
+
 
                 </div>
             </div>
-
-
         @endif
     </div>
+
+
 </body>
 
 </html>
