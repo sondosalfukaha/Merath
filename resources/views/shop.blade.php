@@ -1342,20 +1342,17 @@
                 </div>
 
                 <div class="icon-overlay">
-                    <form action="/wishlist/add/${product.id}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="icon-btn">
-                            <i class="fa-regular fa-heart" style="color: #b3934f"></i>
-                        </button>
-                    </form>
-                    <form action="/cart/add" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit" class="icon-btn">
-                            <input type="hidden" name="product_id" value="${product.id}">
-                            <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
-                        </button>
-                    </form>
-                </div>
+    <form action="/wishlist/add/${product.id}" method="POST" style="display:inline;">
+        @csrf
+        <button type="submit" class="icon-btn">
+            <i class="fa-regular fa-heart" style="color: #b3934f"></i>
+        </button>
+    </form>
+    <button class="icon-btn add-to-cart-btn" data-id="${product.id}">
+        <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
+    </button>
+</div>
+
             </div>
         `;
 
@@ -1398,6 +1395,7 @@
             });
         };
     </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             fetch('/price-range')

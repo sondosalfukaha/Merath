@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cart;
-use App\Models\Product; // assuming you have Product model
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -22,7 +22,7 @@ class CartController extends Controller
     }
 
     // Add to Cart
-    public function add(Request $request)
+    public function add2(Request $request)
     {
         if (!Auth::check()) {
             return redirect('/login')->with('error', 'Please login to add to cart');
@@ -59,6 +59,39 @@ class CartController extends Controller
         Cart::where('user_id', Auth::id())->delete();
         return back()->with('success', 'Cart cleared');
     }
+    public function add(Request $request)
+{
+    if (!Auth::check()) {
+        return redirect('/login')->with('error', 'Please login to add to cart');
+    }
+
+    $cartItem = Cart::where('user_id', Auth::id())
+                    ->where('product_id', $request->product_id)
+                    ->first();
+
+    if ($cartItem) {
+        $cartItem->quantity += 1;
+        $cartItem->save();
+    } else {
+        Cart::create([
+            'user_id' => Auth::id(),
+            'product_id' => $request->product_id,
+            'quantity' => 1
+        ]);
+    }
+
+    // ✅ Get total count of items in this user's cart
+    $cartCount = Cart::where('user_id', Auth::id())->sum('quantity');
+
+    if ($request->ajax()) {
+        return response()->json([
+            'cartCount' => $cartCount,
+            'message' => 'Product added to cart!'
+        ]);
+    }
+
+    return back();
+}
 
 
 

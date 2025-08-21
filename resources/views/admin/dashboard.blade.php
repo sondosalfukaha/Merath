@@ -18,6 +18,28 @@
                 vertical-align: middle;
             }
         </style>
+        <style>
+            .status-select {
+                color: white;
+                font-weight: bold;
+            }
+
+            /* Set background based on data-status */
+            .status-select[data-status="pending"] {
+                background-color: #facc15;
+                /* yellow */
+            }
+
+            .status-select[data-status="shipping"] {
+                background-color: #3b82f6;
+                /* blue */
+            }
+
+            .status-select[data-status="delivery"] {
+                background-color: #10b981;
+                /* green */
+            }
+        </style>
 
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -44,7 +66,7 @@
         <!-- Admin Navigation -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="admin-dashboard.html">
+                <a class="navbar-brand" href="/">
                     <span class="brand-text">Merath Admin</span>
                 </a>
 
@@ -55,7 +77,7 @@
                 <div class="collapse navbar-collapse" id="adminNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link active" href="admin-dashboard.html">Dashboard</a>
+                            <a class="nav-link active" href="/">Dashboard</a>
                         </li>
                     </ul>
 
@@ -177,7 +199,8 @@
                                                     <div
                                                         class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                         Total Orders</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">156</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                        {{ $totalOrders }}</div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="bi bi-cart fa-2x text-gray-300"></i>
@@ -195,7 +218,9 @@
                                                     <div
                                                         class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                                         Customers</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">89</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                        {{ $totalUser }}
+                                                    </div>
                                                 </div>
                                                 <div class="col-auto">
                                                     <i class="bi bi-people fa-2x text-gray-300"></i>
@@ -205,23 +230,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-3 col-md-6 mb-4">
-                                    <div class="card border-left-warning shadow h-100 py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div
-                                                        class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                        Revenue</div>
-                                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$12,450</div>
-                                                </div>
-                                                <div class="col-auto">
-                                                    <i class="bi bi-currency-dollar fa-2x text-gray-300"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                             </div>
 
                             <!-- Recent Orders -->
@@ -242,27 +251,28 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>#ORD-001</td>
-                                                    <td>John Doe</td>
-                                                    <td>$89.99</td>
-                                                    <td><span class="badge bg-success">Completed</span></td>
-                                                    <td>2024-01-15</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>#ORD-002</td>
-                                                    <td>Jane Smith</td>
-                                                    <td>$156.50</td>
-                                                    <td><span class="badge bg-warning">Processing</span></td>
-                                                    <td>2024-01-14</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>#ORD-003</td>
-                                                    <td>Mike Johnson</td>
-                                                    <td>$75.00</td>
-                                                    <td><span class="badge bg-info">Shipped</span></td>
-                                                    <td>2024-01-13</td>
-                                                </tr>
+                                                @forelse($orders as $order)
+                                                    <tr>
+                                                        <td class="px-4 py-2 border text-center">
+                                                            {{ $order->order_number }}</td>
+                                                        <td class="px-4 py-2 border text-center">
+                                                            {{ ucfirst($order->status) }}</td>
+                                                        <td class="px-4 py-2 border text-center">Cash in delivery</td>
+                                                        <td class="px-4 py-2 border text-center">{{ $order->phone }}
+                                                        </td>
+                                                        <td class="px-4 py-2 border text-center">
+                                                            <a href="order.show"
+                                                                class="text-blue-500 hover:underline">
+                                                                View Details
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="5" class="text-center py-4 text-gray-500">No
+                                                            orders found.</td>
+                                                    </tr>
+                                                @endforelse
                                             </tbody>
                                         </table>
                                     </div>
@@ -368,43 +378,90 @@
                                 <table class="table table-striped table-sm">
                                     <thead>
                                         <tr>
-                                            <th>Order ID</th>
-                                            <th>Customer</th>
-                                            <th>Items</th>
-                                            <th>Total</th>
-                                            <th>Status</th>
-                                            <th>Date</th>
-                                            <th>Actions</th>
+                                            <th class="px-4 py-2 border text-center">Order ID</th>
+                                            <th class="px-4 py-2 border text-center">Customer</th>
+                                            <th class="px-4 py-2 border text-center">Phonr</th>
+                                            <th class="px-4 py-2 border text-center">Items</th>
+                                            <th class="px-4 py-2 border text-center">Total</th>
+                                            <th class="px-4 py-2 border text-center">Status</th>
+                                            <th class="px-4 py-2 border text-center">Date</th>
+                                            <th class="px-4 py-2 border text-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>#ORD-001</td>
-                                            <td>John Doe</td>
-                                            <td>2</td>
-                                            <td>$89.99</td>
-                                            <td><span class="badge bg-success">Completed</span></td>
-                                            <td>2024-01-15</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">View</button>
-                                                <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>#ORD-002</td>
-                                            <td>Jane Smith</td>
-                                            <td>3</td>
-                                            <td>$156.50</td>
-                                            <td><span class="badge bg-warning">Processing</span></td>
-                                            <td>2024-01-14</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">View</button>
-                                                <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                            </td>
-                                        </tr>
+                                        @forelse($orders as $order)
+                                            <tr>
+                                                <!-- Order Number -->
+                                                <td class="px-4 py-2 border text-center">
+                                                    {{ $order->order_number }}
+                                                </td>
+
+                                                <!-- Customer Name -->
+                                                <td class="px-4 py-2 border text-center">
+                                                    {{ $order->name }}
+                                                </td>
+                                                <!-- Customer Number -->
+                                                <td class="px-4 py-2 border text-center">
+                                                    {{ $order->phone }}
+                                                </td>
+
+                                                <!-- Items Count -->
+                                                <td class="px-4 py-2 border text-center">
+                                                    {{ $order->items->count() }}
+                                                </td>
+
+                                                <!-- Total Amount -->
+                                                <td class="px-4 py-2 border text-center">
+                                                    JD {{ $order->total_amount }}
+                                                </td>
+
+                                                <!-- Status -->
+                                                <td class="px-4 py-2 border text-center">
+                                                    <form method="POST"
+                                                        action="{{ route('admin.orders.updateStatus', $order->id) }}">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <select name="status" onchange="this.form.submit()"
+                                                            class="status-select border px-2 py-1 rounded font-semibold"
+                                                            data-status="{{ $order->status }}">
+                                                            <option value="pending"
+                                                                {{ $order->status == 'pending' ? 'selected' : '' }}>
+                                                                Pending</option>
+                                                            <option value="shipping"
+                                                                {{ $order->status == 'shipping' ? 'selected' : '' }}>
+                                                                Shipping</option>
+                                                            <option value="delivery"
+                                                                {{ $order->status == 'delivery' ? 'selected' : '' }}>
+                                                                Delivery</option>
+                                                        </select>
+                                                    </form>
+                                                </td>
+
+
+                                                <!-- Date -->
+                                                <td class="px-4 py-2 border text-center">
+                                                    {{ $order->created_at->format('Y-m-d H:i') }}
+                                                </td>
+
+                                                <!-- Actions -->
+                                                <td class="px-4 py-2 border text-center">
+                                                    <a href="{{ route('order.show', $order->id) }}"
+                                                        class="text-blue-500 hover:underline">
+                                                        View Details
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center py-4 text-gray-500">
+                                                    No orders found.
+                                                </td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
 
                         <!-- Customers Tab -->
@@ -420,37 +477,54 @@
                                         <tr>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Orders</th>
-                                            <th>Total Spent</th>
+
                                             <th>Joined</th>
+                                            <th>Role</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>John Doe</td>
-                                            <td>john@example.com</td>
-                                            <td>5</td>
-                                            <td>$450.00</td>
-                                            <td>2023-12-01</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">View</button>
-                                                <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jane Smith</td>
-                                            <td>jane@example.com</td>
-                                            <td>3</td>
-                                            <td>$298.50</td>
-                                            <td>2023-11-15</td>
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">View</button>
-                                                <button class="btn btn-sm btn-outline-secondary">Edit</button>
-                                            </td>
-                                        </tr>
+                                        @foreach ($users as $user)
+                                            <tr>
+                                                <td>{{ $user->name }}</td>
+                                                <td>{{ $user->email }}</td>
+
+                                                <td>{{ $user->created_at->format('Y-m-d') }}</td>
+
+                                                <!-- Role display -->
+                                                <td>
+                                                    @if ($user->usertype == 'admin')
+                                                        <span class="badge bg-success">Admin</span>
+                                                    @else
+                                                        <span class="badge bg-secondary">User</span>
+                                                    @endif
+                                                </td>
+
+                                                <!-- Actions -->
+                                                <td>
+                                                    <form action="{{ route('users.toggleRole', $user->id) }}"
+                                                        method="POST" style="display:inline-block;">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        @if ($user->usertype === 'admin')
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-outline-warning"
+                                                                {{ \App\Models\User::where('usertype', 'admin')->count() <= 1 ? 'disabled title=At least one admin required' : '' }}>
+                                                                Make User
+                                                            </button>
+                                                        @else
+                                                            <button type="submit"
+                                                                class="btn btn-sm btn-outline-success">Make
+                                                                Admin</button>
+                                                        @endif
+                                                    </form>
+
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
 

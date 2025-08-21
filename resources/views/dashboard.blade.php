@@ -16,18 +16,35 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="px-4 py-2 border text-center">Order ID</td>
-                                    <td class="px-4 py-2 border text-center">Order Status</td>
-                                    <td class="px-4 py-2 border text-center">
-                                        Cash</td>
-                                    <td class="px-4 py-2 border text-center">0798037948</td>
-                                    <td class="px-4 py-2 border text-center">
-                                        <a href="" class="text-blue-500 hover:underline">View
-                                            Details</a>
-                                    </td>
-                                </tr>
+                                @forelse($orders as $order)
+                                    <tr>
+                                        <td class="px-4 py-2 border text-center">{{ $order->order_number }}</td>
+                                        <td
+                                            class="px-4 py-2 border text-center
+                                                            @if ($order->status == 'pending') bg-yellow-200 text-yellow-800
+                                                            @elseif($order->status == 'shipping') bg-blue-200 text-blue-800
+                                                            @elseif($order->status == 'delivery') bg-green-200 text-green-800 @endif
+                                                        ">
+                                            {{ ucfirst($order->status) }}
+                                        </td>
+
+                                        <td class="px-4 py-2 border text-center">Cash in delivery</td>
+                                        <td class="px-4 py-2 border text-center">{{ $order->phone }}</td>
+                                        <td class="px-4 py-2 border text-center">
+                                            <a href="{{ route('order.show', $order->id) }}"
+                                                class="text-blue-500
+                                                hover:underline">
+                                                View Details
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-gray-500">No orders found.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
+
                         </table>
                         <br>
                         <a class="nav-link text-blue-600 hover:underline" href="/">← Back to Shop</a>

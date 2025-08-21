@@ -265,7 +265,7 @@
         }
 
         .cart-summary {
-            background: #dcdcdc4f;
+            border-radius: 10px;
             width: 25%;
             padding: 10px;
             margin-top: 10px;
@@ -367,6 +367,18 @@
             color: #555;
             text-align: center;
         }
+
+        .col-move i {
+            transition: 0.3s ease-in-out;
+            color: #b3934f;
+            font-size: 27px;
+        }
+
+        .col-move i:hover {
+            color: #C4A35A;
+
+
+        }
     </style>
     <title>Cart</title>
 </head>
@@ -452,6 +464,7 @@
 
                 <span class="col col-price">Price</span>
                 <span class="col col-remove">Remove</span>
+                <span class="col col-remove">Move to</span>
             </div>
 
             @php
@@ -482,11 +495,8 @@
                         <span>{{ $item->quantity }}</span>
                         <!--<button class="qty-btn">+</button>-->
                     </div>
-
-
-
                     <div class="col col-price">
-                        JD{{ $subtotal }}
+                        {{ $subtotal }} JD
                     </div>
                     <div class="col col-remove">
                         <form method="POST" action="/cart/remove/{{ $item->id }}">
@@ -494,21 +504,137 @@
                             @method('DELETE')
                             <button type="submit" class="remove-btn">×</button>
                         </form>
+
                     </div>
+                    <div class="col col-move">
+                        <form method="POST" action="{{ route('wishlist.move', $item->product->id) }}"
+                            style="display:inline-block; margin-left:5px;">
+                            @csrf
+                            <button type="submit" class="btn-heart-plus"
+                                style="background:none; border:none; cursor:pointer; position:relative; font-size:1.2rem;">
+                                <i class="fa-regular fa-heart"></i>
+                                <i class="fa-solid fa-plus"
+                                    style="position:absolute; top:0; right:0; font-size:0.6rem; color:#C4A35A;"></i>
+                            </button>
+
+                        </form>
+                    </div>
+
                 </div>
             @endforeach
 
             <div class="cart-summary">
-                <div style="margin-bottom:15px;">Total Items: {{ $totalQty }}</div>
-                <div style="margin-bottom:15px;">Total Amount: JD{{ $total }}</div>
+                <div style="margin-bottom:15px;">Total Items:
+                    @if ($totalQty == 1)
+                        {{ $totalQty }} item
+                    @else
+                        {{ $totalQty }} items
+                    @endif
+                </div>
+                <div style="margin-bottom:15px;">Total Amount: {{ $total }} JD </div>
                 <div class="cart-actions">
-                    <form method="POST" action="/cart/clear">
+                    <!-- Clear Cart Form -->
+                    <form id="clear-cart-form" method="POST" action="/cart/clear">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn-clear">Clear Cart
-                            <i class="fa-solid fa-trash fa-sm"></i>
+                        <button type="button" class="btn-clear" id="clear-cart-btn">
+                            Clear Cart <i class="fa-solid fa-trash fa-sm"></i>
                         </button>
                     </form>
+
+                    <!-- Modal -->
+                    <div id="confirm-modal" class="modal">
+                        <div class="modal-content">
+                            <p>Are you sure you want to clear the cart?</p>
+                            <div class="modal-actions">
+                                <button id="modal-yes" class="btn-yes">Yes</button>
+                                <button id="modal-no" class="btn-no">No</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        /* Modal Styles */
+                        .modal {
+                            display: none;
+                            /* Hidden by default */
+                            position: fixed;
+                            z-index: 1000;
+                            left: 0;
+                            top: 0;
+                            width: 100%;
+                            height: 100%;
+                            overflow: auto;
+                            background-color: rgba(0, 0, 0, 0.5);
+                            /* Black overlay */
+                            justify-content: center;
+                            align-items: center;
+                        }
+
+                        .modal-content {
+                            background-color: #fff;
+                            padding: 20px;
+                            border-radius: 10px;
+                            text-align: center;
+                            width: 300px;
+                        }
+
+                        .modal-actions {
+                            margin-top: 20px;
+                            display: flex;
+                            justify-content: space-around;
+                        }
+
+                        .btn-yes {
+                            background-color: #C4A35A;
+                            color: #fff;
+                            border: none;
+                            padding: 8px 16px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        }
+
+                        .btn-no {
+                            background-color: #ccc;
+                            color: #000;
+                            border: none;
+                            padding: 8px 16px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                        }
+                    </style>
+
+                    <script>
+                        const clearBtn = document.getElementById('clear-cart-btn');
+                        const modal = document.getElementById('confirm-modal');
+                        const yesBtn = document.getElementById('modal-yes');
+                        const noBtn = document.getElementById('modal-no');
+                        const form = document.getElementById('clear-cart-form');
+
+                        // Show modal on button click
+                        clearBtn.addEventListener('click', () => {
+                            modal.style.display = 'flex';
+                        });
+
+                        // If Yes, submit the form
+                        yesBtn.addEventListener('click', () => {
+                            form.submit();
+                        });
+
+                        // If No, hide modal
+                        noBtn.addEventListener('click', () => {
+                            modal.style.display = 'none';
+                        });
+
+                        // Close modal if clicked outside content
+                        window.addEventListener('click', (e) => {
+                            if (e.target === modal) {
+                                modal.style.display = 'none';
+                            }
+                        });
+                    </script>
+
+
                     <a href="{{ route('order.checkout') }}" class="btn-place"
                         style="text-decoration: none; font-weight:100;">Process To</a>
 

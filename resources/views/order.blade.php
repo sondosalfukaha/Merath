@@ -368,6 +368,78 @@
             text-align: center;
         }
     </style>
+    <style>
+        .checkout-form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .checkout-top {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .checkout-top h3 {
+            margin-bottom: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .checkout-top select {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #f5f5f5;
+            cursor: not-allowed;
+            /* disabled styling */
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row input {
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-row input:focus {
+            border-color: #b3934f;
+        }
+
+        .btn-place-order {
+            width: 100%;
+            padding: 12px;
+            background-color: #b3934f;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .btn-place-order:hover {
+            background-color: #99783f;
+            transform: translateY(-2px);
+        }
+    </style>
+
     <title>Cart</title>
 </head>
 
@@ -423,7 +495,6 @@
     @endphp
 
     <!-- Checkout Tracker -->
-    <!-- Checkout Tracker -->
     <div class="checkout-tracker">
         <div class="step completed">
             <div class="circle">1</div>
@@ -442,12 +513,9 @@
 
 
     <div class="cart-container">
-        <!--<h2 style="text-align:center; margin-bottom: 20px;">Checkout</h2>-->
-
-        <form method="POST" action="{{ route('order.place') }}" class="checkout-form">
+        <form method="POST" action="{{ route('order.place') }}" class="checkout-form" id="checkoutForm">
             @csrf
 
-            <!-- Total and Payment -->
             <div class="checkout-top">
                 <h3>Total: JD{{ $total }}</h3>
                 <label for="payment">Payment Method</label>
@@ -457,97 +525,50 @@
                 </select>
             </div>
 
-            <!-- Fields: two per row -->
-
             <div class="form-row">
                 <input type="text" name="name" placeholder="Your Name" required>
                 <input type="email" name="email" placeholder="Your Email" required>
             </div>
+
             <div class="form-row">
-                <input type="text" name="phone" placeholder="Phone">
-                <input type="text" name="address" placeholder="Address">
+                <!-- Global E.164 validation -->
+                <input type="tel" name="phone" placeholder="Phone (e.g. +14155552671)" pattern="^\+[1-9]\d{1,14}$"
+                    required>
+                <input type="text" name="address" placeholder="Address" required>
             </div>
 
-            <!-- Place order button -->
-
-            <button type="submit" class="btn-place-order" onclick="this.disabled=true; this.form.submit();">Place
-                Order</button>
-
+            <button type="submit" class="btn-place-order">Place Order</button>
         </form>
-
-        <style>
-            .checkout-form {
-                max-width: 500px;
-                margin: 0 auto;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                font-family: Arial, sans-serif;
-            }
-
-            .checkout-top {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
-            .checkout-top h3 {
-                margin-bottom: 10px;
-                font-size: 20px;
-                color: #333;
-            }
-
-            .checkout-top select {
-                width: 100%;
-                padding: 10px;
-                font-size: 14px;
-                border-radius: 5px;
-                border: 1px solid #ccc;
-                background-color: #f5f5f5;
-                cursor: not-allowed;
-                /* disabled styling */
-            }
-
-            .form-row {
-                display: flex;
-                gap: 20px;
-            }
-
-            .form-row input {
-                flex: 1;
-                padding: 10px;
-                font-size: 14px;
-                border-radius: 5px;
-                border: 1px solid #ccc;
-                outline: none;
-                transition: border-color 0.3s;
-            }
-
-            .form-row input:focus {
-                border-color: #b3934f;
-            }
-
-            .btn-place-order {
-                width: 100%;
-                padding: 12px;
-                background-color: #b3934f;
-                color: #fff;
-                font-size: 16px;
-                font-weight: bold;
-                border: none;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-                cursor: pointer;
-                transition: background-color 0.3s, transform 0.2s;
-            }
-
-            .btn-place-order:hover {
-                background-color: #99783f;
-                transform: translateY(-2px);
-            }
-        </style>
-
     </div>
+
+    <script>
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            const phoneInput = this.phone;
+            const phonePattern = /^\+[1-9]\d{1,14}$/; // E.164 format
+            const emailInput = this.email;
+
+            // Phone validation (global)
+            if (!phonePattern.test(phoneInput.value)) {
+                e.preventDefault();
+                alert("Please enter a valid phone number in international format (e.g., +14155552671).");
+                phoneInput.focus();
+                return false;
+            }
+
+            // Email validation (browser already checks 'type=email', but extra safeguard)
+            if (!emailInput.validity.valid) {
+                e.preventDefault();
+                alert("Please enter a valid email address.");
+                emailInput.focus();
+                return false;
+            }
+
+            // Prevent double click
+            this.querySelector('.btn-place-order').disabled = true;
+        });
+    </script>
+
+
 
 
 </body>

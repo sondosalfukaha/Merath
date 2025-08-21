@@ -32,7 +32,7 @@ class CategoryController extends Controller
                 'description' => $request->description,
                 'image' => $imagePath,
             ]);
-            
+
 
             return redirect()->back()->with('success', 'Category created successfully!');
         }
@@ -60,4 +60,22 @@ public function destroy($id)
 
     return redirect()->back()->with('success', 'Category deleted successfully!');
 }
+public function toggleRole(User $user)
+{
+    $adminCount = User::where('is_admin', true)->count();
+
+    if(auth()->id() === $user->id) {
+        return back()->with('error', 'You cannot change your own role.');
+    }
+
+    if($user->is_admin && $adminCount <= 1) {
+        return back()->with('error', 'At least one admin is required.');
+    }
+
+    $user->is_admin = !$user->is_admin;
+    $user->save();
+
+    return back()->with('success', 'User role updated.');
+}
+
 }

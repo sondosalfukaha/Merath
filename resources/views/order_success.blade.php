@@ -438,12 +438,83 @@
         </div>
     </div>
 
-
     <div class="cart-container">
-        <h2>Order Placed Successfully</h2>
-        <p>Your Order Number: {{ $order->order_number }}</p>
-        <p>Status: {{ $order->status }}</p>
+        <div class="success-card">
+            <div class="checkmark">&#10003;</div>
+            <h2>Order Placed Successfully</h2>
+            <p>Your Order Number: <span class="highlight">{{ $order->order_number }}</span></p>
+            <p>Status: <span class="status">{{ $order->status }}</span></p>
+            <a href="/shop" class="btn">Continue Shopping</a>
+        </div>
     </div>
+
+    <style>
+        .cart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+
+            padding: 20px;
+        }
+
+        .success-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .success-card h2 {
+            color: #28a745;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .success-card p {
+            font-size: 16px;
+            color: #333;
+            margin: 8px 0;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .status {
+            font-weight: bold;
+            color: #28a745;
+        }
+
+        .checkmark {
+            font-size: 50px;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+    </style>
+
+
 
 
 </body>

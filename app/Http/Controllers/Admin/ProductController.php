@@ -5,6 +5,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Order;
+use App\Models\User;
 
 class ProductController extends Controller
 {
@@ -30,7 +32,11 @@ class ProductController extends Controller
         $products = Product::with('category')->get();
         $categories = Category::all();
         $totalProducts = Product::count();
-        return view('Admin.dashboard', compact('products', 'categories','totalProducts'));
+        $totalOrders = Order::count();
+        $orders = Order::all();
+        $users = User::all();
+        $totalUser = User::count();
+        return view('Admin.dashboard', compact('products', 'categories','totalProducts','orders','totalOrders','users','totalUser'));
     }
 
     public function store(Request $request)

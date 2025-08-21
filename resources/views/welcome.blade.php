@@ -1177,6 +1177,31 @@
         #scrollToTop2:hover {
             background-color: #555;
         }
+
+        #cart-plus {
+            transition: all 0.5s ease-out;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #cart-plus.show {
+            transform: translateX(-50%) translateY(-30px);
+            opacity: 1;
+        }
+
+        .cart-link {
+            color: #fff;
+            /* your desired color */
+            text-decoration: none;
+            /* remove underline */
+        }
+
+        .cart-link:hover,
+        .cart-link:visited,
+        .cart-link:active,
+        .cart-link:focus {
+            color: #fff;
+            /* keep same color for all states */
+        }
     </style>
 
 </head>
@@ -1186,6 +1211,60 @@
 </a>
 
 <body>
+    <!-- Fixed Cart Icon -->
+    <div id="fixed-cart"
+        style="
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            background: #b3934f;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            cursor: pointer;
+        ">
+        <a href="/cart" class="cart-link">
+            <i class="fas fa-shopping-cart"></i>
+        </a>
+
+        <span id="cart-count"
+            style="
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: red;
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+    ">{{ $cartCount ?? 0 }}</span>
+    </div>
+
+    <!-- Plus Notification -->
+    <div id="cart-plus"
+        style="
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 70px;
+            color: #b3934f85;
+            font-weight: bold;
+            z-index: 9999;
+            pointer-events: none;
+        ">
+        +1
+    </div>
 
 
     <!--Start NavBar-->
@@ -1214,9 +1293,10 @@
                 <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
                     <a href="/cart">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge" id="cart-count">{{ $cartItems->count() }}</span>
+                        <span class="cart-badge" id="cart-count">{{ $cartCount ?? 0 }}</span>
                     </a>
                 </div>
+
                 <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
             </div>
 
@@ -1332,19 +1412,22 @@
 
                                 <!-- Overlay Icons -->
                                 <div class="icon-overlay">
-                                    <form action="{{ route('wishlist.add', $product->id) }}" method="POST"
+                                    <form class="ajax-wishlist-form" method="POST" action="/wishlist/add"
                                         style="display:inline;">
                                         @csrf
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <button type="submit" class="icon-btn">
                                             <i class="fa-regular fa-heart" style="color: #b3934f"></i>
                                             <!-- outline -->
                                         </button>
                                     </form>
-                                    <form action="/cart/add" method="POST" style="display:inline;">
+
+
+                                    <form class="ajax-cart-form" method="POST" action="/cart/add"
+                                        style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <button type="submit" class="icon-btn">
-
                                             <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
                                         </button>
                                     </form>
@@ -1356,6 +1439,8 @@
                                 <p class="categoryname">{{ $product->category->name }}</p>
                                 <p class="getcolorOfprice">{{ $product->price }} JD</p>
                             </div>
+
+
                         </div>
                     @endforeach
                 </div>
@@ -1425,7 +1510,8 @@
                                                 <!-- outline -->
                                             </button>
                                         </form>
-                                        <form action="/cart/add" method="POST" style="display:inline;">
+                                        <form class="ajax-cart-form" method="POST" action="/cart/add"
+                                            style="display:inline;">
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                                             <button type="submit" class="icon-btn">
@@ -1564,6 +1650,7 @@
             </div>
         </footer>
 
+        
 
         <!-- Scroll Logic -->
         <script>
@@ -1628,6 +1715,81 @@
                 });
             });
         </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Cart AJAX
+                document.querySelectorAll('.ajax-cart-form').forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        e.preventDefault(); // Prevent page reload
+
+                        let formData = new FormData(this);
+
+                        fetch(this.action, {
+                                method: 'POST',
+                                body: formData,
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+
+                                }
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                // Update cart count
+                                document.getElementById('cart-count').textContent = data.cartCount;
+
+                                // Show +1 animation
+                                let plus = document.getElementById('cart-plus');
+                                plus.style.display = 'block';
+                                plus.style.opacity = '1';
+                                setTimeout(() => {
+                                    plus.style.opacity = '0';
+                                }, 800);
+                                setTimeout(() => {
+                                    plus.style.display = 'none';
+                                }, 1000);
+                            });
+                    });
+                });
+
+
+
+                // Wishlist AJAX
+                document.querySelectorAll('.ajax-wishlist-form').forEach(form => {
+                    form.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+
+                        const url = this.action;
+                        const data = new FormData(this);
+
+                        try {
+                            const response = await fetch(url, {
+                                method: 'POST',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': data.get('_token')
+                                },
+                                body: data
+                            });
+
+                            const result = await response.json();
+
+                            // Example: update wishlist badge
+                            if (result.wishlist_count !== undefined) {
+                                document.getElementById('wishlist-count').textContent = result
+                                    .wishlist_count;
+                            }
+
+                            alert(result.message || 'Wishlist updated!');
+                        } catch (err) {
+                            console.error(err);
+                            alert('Error updating wishlist.');
+                        }
+                    });
+                });
+            });
+        </script>
+
+
 </body>
 
 </html>

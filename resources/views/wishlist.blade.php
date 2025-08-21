@@ -436,12 +436,105 @@
 
             <div class="wishlist-header">
                 <h2>Saved Items ({{ $wishlists->count() }})</h2>
-                <form action="{{ route('wishlist.clear') }}" method="POST"
-                    onsubmit="return confirm('Are you sure you want to remove all items?');">
+                <!-- Clear Wishlist Form -->
+                <form id="clear-wishlist-form" action="{{ route('wishlist.clear') }}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="clear-btn">Clear Wishlist</button>
+                    <button type="button" class="clear-btn" id="clear-wishlist-btn">
+                        Clear Wishlist
+                    </button>
                 </form>
+
+                <!-- Modal -->
+                <div id="wishlist-modal" class="modal">
+                    <div class="modal-content">
+                        <p>Are you sure you want to remove all items from your wishlist?</p>
+                        <div class="modal-actions">
+                            <button id="wishlist-yes" class="btn-yes">Yes</button>
+                            <button id="wishlist-no" class="btn-no">No</button>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    /* Reuse same modal CSS from cart modal */
+                    .modal {
+                        display: none;
+                        position: fixed;
+                        z-index: 1000;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        overflow: auto;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .modal-content {
+                        background-color: #fff;
+                        padding: 20px;
+                        border-radius: 10px;
+                        text-align: center;
+                        width: 300px;
+                    }
+
+                    .modal-actions {
+                        margin-top: 20px;
+                        display: flex;
+                        justify-content: space-around;
+                    }
+
+                    .btn-yes {
+                        background-color: #C4A35A;
+                        color: #fff;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+
+                    .btn-no {
+                        background-color: #ccc;
+                        color: #000;
+                        border: none;
+                        padding: 8px 16px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                    }
+                </style>
+
+                <script>
+                    const wishlistBtn = document.getElementById('clear-wishlist-btn');
+                    const wishlistModal = document.getElementById('wishlist-modal');
+                    const wishlistYes = document.getElementById('wishlist-yes');
+                    const wishlistNo = document.getElementById('wishlist-no');
+                    const wishlistForm = document.getElementById('clear-wishlist-form');
+
+                    // Show modal on button click
+                    wishlistBtn.addEventListener('click', () => {
+                        wishlistModal.style.display = 'flex';
+                    });
+
+                    // If Yes, submit the form
+                    wishlistYes.addEventListener('click', () => {
+                        wishlistForm.submit();
+                    });
+
+                    // If No, hide modal
+                    wishlistNo.addEventListener('click', () => {
+                        wishlistModal.style.display = 'none';
+                    });
+
+                    // Close modal if clicked outside content
+                    window.addEventListener('click', (e) => {
+                        if (e.target === wishlistModal) {
+                            wishlistModal.style.display = 'none';
+                        }
+                    });
+                </script>
+
             </div>
 
             <div class="wishlist-grid">

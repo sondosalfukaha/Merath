@@ -61,6 +61,52 @@ class WishlistController extends Controller
 
     return redirect()->back()->with('success', 'All items removed from wishlist.');
 }
+public function moveFromCart($productId)
+    {
+        $userId = auth()->id();
 
+        // Check if product already in wishlist
+        $exists = Wishlist::where('user_id', $userId)
+            ->where('product_id', $productId)
+            ->first();
+
+        if (!$exists) {
+            Wishlist::create([
+                'user_id' => $userId,
+                'product_id' => $productId,
+            ]);
+        }
+
+        // Remove from cart
+        Cart::where('user_id', $userId)
+            ->where('product_id', $productId)
+            ->delete();
+
+        return back()->with('success', 'Product moved to wishlist.');
+    }
+    public function addWishlist(Product $product)
+{
+    if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Please login to add to wishlist.');
+        }
+
+        // Prevent duplicate entries
+        $exists = Wishlist::where('user_id', Auth::id())
+                    ->where('product_id', $product_id)
+                    ->exists();
+
+        if (!$exists) {
+            Wishlist::create([
+                'user_id' => Auth::id(),
+                'product_id' => $product_id
+            ]);
+        }
+$wishlists = Wishlist::where('user_id', Auth::id())->get();
+    return response()->json([
+        'message' => $product->name . ' added to wishlist!',
+        'wishlistCount' => $wishlists,
+    ]);
 }
+}
+
 

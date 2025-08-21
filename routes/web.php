@@ -13,6 +13,10 @@ use App\Models\Wishlist;
 use App\Http\Controllers\CartController;
 use App\Models\Cart;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Admin\UserController;
+
+
 
 
 
@@ -35,11 +39,29 @@ Route::get('/shop', function () {
     $cartItems = Cart::where('user_id', Auth::id())->get();
         return view('shop',compact('cartItems'));
 });
-
+/*
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+*/
 
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('order.show');
+/******************************************************* */
+
+Route::patch('/admin/orders/{order}/status', [OrderController::class, 'updateStatus'])
+    ->name('admin.orders.updateStatus');
+/*toggle user to admin via admin dashboard*/
+
+
+Route::patch('/admin/users/{user}/toggle-role', [UserController::class, 'toggleRole'])
+    ->middleware(['auth', 'admin']) // only admins can access
+    ->name('users.toggleRole');
+
+
+/********************************************************** */
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -96,12 +118,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/add', [CartController::class, 'add']);
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove']);
     Route::delete('/cart/clear', [CartController::class, 'clear']);
+
     /////////////////////////////////////////////////////////////////////////////
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('order.checkout');
     Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('order.place');
     Route::get('/order-success/{id}', [OrderController::class, 'success'])->name('order.success');
 });
+Route::post('/wishlist/move/{product}', [WishlistController::class, 'moveFromCart'])->name('wishlist.move');
+
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+/*with no loading*/
+Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+
+
+Route::post('/wishlist/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
+
 
 
 
