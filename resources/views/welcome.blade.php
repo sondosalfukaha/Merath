@@ -1202,6 +1202,21 @@
             color: #fff;
             /* keep same color for all states */
         }
+
+        .link-cart:hover,
+        .link-cart:visited,
+        .link-cart:active,
+        .link-cart:focus {
+            color: #000;
+            /* keep same color for all states */
+        }
+
+        .link-cart {
+            color: #000;
+            /* your desired color */
+            text-decoration: none;
+            /* remove underline */
+        }
     </style>
 
 </head>
@@ -1291,7 +1306,7 @@
                     </a>
                 @endauth
                 <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
-                    <a href="/cart">
+                    <a href="/cart" class="link-cart">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-badge" id="cart-count">{{ $cartCount ?? 0 }}</span>
                     </a>
@@ -1650,7 +1665,7 @@
             </div>
         </footer>
 
-        
+
 
         <!-- Scroll Logic -->
         <script>
