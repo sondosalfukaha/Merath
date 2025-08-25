@@ -155,7 +155,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/contacts/{id}', [ContactController::class, 'show'])->name('admin.contacts.show');
     Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('admin.contacts.destroy');
 });
-
+// + - QTY in CART
+Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
 
 
 

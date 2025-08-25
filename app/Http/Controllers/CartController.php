@@ -89,8 +89,88 @@ class CartController extends Controller
         ], 500);
     }
 }
+/*
+public function updateQuantity(Request $request, $id)
+{
+    $cartItem = Cart::findOrFail($id);
 
+    if($request->action === 'increase') {
+        $cartItem->quantity += 1;
+    } elseif($request->action === 'decrease' && $cartItem->quantity > 1) {
+        $cartItem->quantity -= 1;
+    }
 
+    $cartItem->save();
+
+    // Calculate subtotal
+    $subtotal = $cartItem->quantity * $cartItem->product->price;
+
+    // Calculate total for user
+    $total = Cart::where('user_id', auth()->id())
+        ->get()
+        ->sum(fn($item) => $item->quantity * $item->product->price);
+
+    return response()->json([
+        'success' => true,
+        'newQuantity' => $cartItem->quantity,
+        'subtotal' => $subtotal,
+        'total' => $total
+    ]);
+}
+*/
+
+public function updateQuantity(Request $request, $id)
+{
+    $cartItem = Cart::with('product')->findOrFail($id); // eager load product
+
+    if ($request->action === 'increase') {
+        // ✅ check stock
+        if ($cartItem->quantity < $cartItem->product->stock) {
+            $cartItem->quantity += 1;
+            $cartItem->save();
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Stock limit reached'
+            ], 400);
+        }
+    } elseif ($request->action === 'decrease') {
+        if ($cartItem->quantity > 1) {
+            $cartItem->quantity -= 1;
+            $cartItem->save();
+        } else {
+            // ✅ remove item if qty = 1 and user decreases
+            $cartItem->delete();
+
+            $total = Cart::where('user_id', auth()->id())
+                ->get()
+                ->sum(fn($item) => $item->quantity * $item->product->price);
+
+            return response()->json([
+                'success' => true,
+                'removed' => true,
+                'total' => $total
+            ]);
+        }
+    }
+
+    // Calculate subtotal
+    $subtotal = $cartItem->quantity * $cartItem->product->price;
+
+    // Calculate total
+    $total = Cart::where('user_id', auth()->id())
+        ->get()
+        ->sum(fn($item) => $item->quantity * $item->product->price);
+    $totalQty = Cart::where('user_id', auth()->id())->sum('quantity');
+    return response()->json([
+        'success' => true,
+        'removed' => false,
+        'newQuantity' => $cartItem->quantity,
+        'subtotal' => $subtotal,
+        'total' => $total,
+        'totalQty' => $totalQty,
+    ]);
+}
 
 
 }

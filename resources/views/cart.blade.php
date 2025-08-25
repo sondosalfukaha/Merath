@@ -380,6 +380,129 @@
 
         }
     </style>
+    <style>
+        .qty-change {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #C4A35A;
+            font-weight: bold;
+            padding: 0 10px;
+            user-select: none;
+        }
+
+        .qty-change:hover {
+            transform: scale(1.2);
+            transition: transform 0.2s ease;
+        }
+    </style>
+    <style>
+        /* Modal background */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Modal box */
+        .modal-content {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: pop 0.2s ease-in-out;
+        }
+
+        .modal-content p {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        .modal-content button {
+            background: #007bff;
+            border: none;
+            padding: 8px 16px;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .modal-content button:hover {
+            background: #0056b3;
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Black overlay */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 300px;
+        }
+
+        .modal-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .btn-yes {
+            background-color: #C4A35A;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-no {
+            background-color: #ccc;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
     <title>Cart</title>
 </head>
 
@@ -397,7 +520,7 @@
                 <a href="/shop">Shop</a>
                 <a href="/collection">Collections</a>
                 <a href="/about">About</a>
-                <a href="contact">Contact</a>
+                <a href="/contact">Contact</a>
             </nav>
 
             <!-- Icons -->
@@ -463,6 +586,7 @@
                 <span class="col col-qty">Quantity</span>
 
                 <span class="col col-price">Price</span>
+                <span class="col col-price">SubTotal</span>
                 <span class="col col-remove">Remove</span>
                 <span class="col col-remove">Move to</span>
             </div>
@@ -479,7 +603,8 @@
                     $totalQty += $item->quantity;
                 @endphp
 
-                <div class="cart-item">
+                <div class="cart-item" data-id="{{ $item->id }}">
+
 
                     <div class="col col-product">
 
@@ -491,13 +616,18 @@
                     </div>
 
                     <div class="col col-qty">
-                        <!--<button class="qty-btn">-</button>-->
-                        <span>{{ $item->quantity }}</span>
-                        <!--<button class="qty-btn">+</button>-->
+                        <button class="qty-change" data-action="decrease" data-id="{{ $item->id }}">−</button>
+                        <span id="qty-{{ $item->id }}">{{ $item->quantity }}</span>
+                        <button class="qty-change" data-action="increase" data-id="{{ $item->id }}">+</button>
                     </div>
+
                     <div class="col col-price">
+                        {{ $item->product->price }} JD
+                    </div>
+                    <div class="col col-price" id="subtotal-{{ $item->id }}">
                         {{ $subtotal }} JD
                     </div>
+
                     <div class="col col-remove">
                         <form method="POST" action="/cart/remove/{{ $item->id }}">
                             @csrf
@@ -525,13 +655,19 @@
 
             <div class="cart-summary">
                 <div style="margin-bottom:15px;">Total Items:
+                    <span id="total-items">
+                        {{ $totalQty }}
+                    </span>
                     @if ($totalQty == 1)
-                        {{ $totalQty }} item
+                        item
                     @else
-                        {{ $totalQty }} items
+                        items
                     @endif
                 </div>
-                <div style="margin-bottom:15px;">Total Amount: {{ $total }} JD </div>
+
+                <div style="margin-bottom:15px;">Total Amount: <span id="total-amount">
+                        {{ $total }}</span> JD
+                </div>
                 <div class="cart-actions">
                     <!-- Clear Cart Form -->
                     <form id="clear-cart-form" method="POST" action="/cart/clear">
@@ -553,88 +689,6 @@
                         </div>
                     </div>
 
-                    <style>
-                        /* Modal Styles */
-                        .modal {
-                            display: none;
-                            /* Hidden by default */
-                            position: fixed;
-                            z-index: 1000;
-                            left: 0;
-                            top: 0;
-                            width: 100%;
-                            height: 100%;
-                            overflow: auto;
-                            background-color: rgba(0, 0, 0, 0.5);
-                            /* Black overlay */
-                            justify-content: center;
-                            align-items: center;
-                        }
-
-                        .modal-content {
-                            background-color: #fff;
-                            padding: 20px;
-                            border-radius: 10px;
-                            text-align: center;
-                            width: 300px;
-                        }
-
-                        .modal-actions {
-                            margin-top: 20px;
-                            display: flex;
-                            justify-content: space-around;
-                        }
-
-                        .btn-yes {
-                            background-color: #C4A35A;
-                            color: #fff;
-                            border: none;
-                            padding: 8px 16px;
-                            border-radius: 5px;
-                            cursor: pointer;
-                        }
-
-                        .btn-no {
-                            background-color: #ccc;
-                            color: #000;
-                            border: none;
-                            padding: 8px 16px;
-                            border-radius: 5px;
-                            cursor: pointer;
-                        }
-                    </style>
-
-                    <script>
-                        const clearBtn = document.getElementById('clear-cart-btn');
-                        const modal = document.getElementById('confirm-modal');
-                        const yesBtn = document.getElementById('modal-yes');
-                        const noBtn = document.getElementById('modal-no');
-                        const form = document.getElementById('clear-cart-form');
-
-                        // Show modal on button click
-                        clearBtn.addEventListener('click', () => {
-                            modal.style.display = 'flex';
-                        });
-
-                        // If Yes, submit the form
-                        yesBtn.addEventListener('click', () => {
-                            form.submit();
-                        });
-
-                        // If No, hide modal
-                        noBtn.addEventListener('click', () => {
-                            modal.style.display = 'none';
-                        });
-
-                        // Close modal if clicked outside content
-                        window.addEventListener('click', (e) => {
-                            if (e.target === modal) {
-                                modal.style.display = 'none';
-                            }
-                        });
-                    </script>
-
-
                     <a href="{{ route('order.checkout') }}" class="btn-place"
                         style="text-decoration: none; font-weight:100;">Process To</a>
 
@@ -644,7 +698,127 @@
             </div>
         @endif
     </div>
+    <!-- Modal Structure -->
+    <div id="stockModal" class="modal">
+        <div class="modal-content">
+            <p>⚠️ Stock limit reached</p>
+            <button id="closeModal">OK</button>
+        </div>
+    </div>
 
+    <script>
+        document.querySelectorAll('.qty-change').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const action = this.dataset.action;
+                const itemId = this.dataset.id;
+                const qtySpan = document.getElementById(`qty-${itemId}`);
+
+                try {
+                    const res = await fetch(`/cart/update/${itemId}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            action
+                        })
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        if (data.removed) {
+                            document.querySelector(`.cart-item[data-id="${itemId}"]`).remove();
+                        } else {
+                            // update quantity
+                            qtySpan.textContent = data.newQuantity;
+                            // update subtotal
+                            document.getElementById(`subtotal-${itemId}`).textContent = data.subtotal +
+                                ' JD';
+                        }
+
+                        // update total amount
+                        document.getElementById('total-amount').textContent = data.total + ' JD';
+
+                        // ✅ update total items
+                        const totalItemsEl = document.getElementById('total-items');
+                        if (totalItemsEl) {
+                            totalItemsEl.textContent = data.totalQty + (data.totalQty === 1 ? ' item' :
+                                ' items');
+                        }
+                    } else {
+                        // 🔴 If backend sends stock error, show modal instead of alert
+                        if (data.message && data.message.includes("Stock limit")) {
+                            showStockModal();
+                        } else {
+                            alert(data.message ?? 'Update failed.');
+                        }
+                    }
+                } catch (err) {
+                    console.error(err);
+                    alert('Failed to update quantity.');
+                }
+            });
+        });
+
+        // Function to show the stock modal
+        function showStockModal() {
+            document.getElementById("stockModal").style.display = "flex";
+        }
+
+        // Close modal when clicking OK
+        document.getElementById("closeModal").onclick = function() {
+            document.getElementById("stockModal").style.display = "none";
+        }
+    </script>
+    <script>
+        if (data.success) {
+            if (data.removed) {
+                document.querySelector(`.cart-item[data-id="${itemId}"]`).remove();
+            } else {
+                qtySpan.textContent = data.newQuantity;
+                document.getElementById(`subtotal-${itemId}`).textContent = data.subtotal + ' JD';
+            }
+
+            // update total amount
+            document.getElementById('total-amount').textContent = data.total + ' JD';
+
+            // 🔴 update total items count
+            if (data.totalQty !== undefined) {
+                document.getElementById('total-items').textContent = data.totalQty;
+            }
+        }
+    </script>
+    <script>
+        const clearBtn = document.getElementById('clear-cart-btn');
+        const modal = document.getElementById('confirm-modal');
+        const yesBtn = document.getElementById('modal-yes');
+        const noBtn = document.getElementById('modal-no');
+        const form = document.getElementById('clear-cart-form');
+
+        // Show modal on button click
+        clearBtn.addEventListener('click', () => {
+            modal.style.display = 'flex';
+        });
+
+        // If Yes, submit the form
+        yesBtn.addEventListener('click', () => {
+            form.submit();
+        });
+
+        // If No, hide modal
+        noBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Close modal if clicked outside content
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
 
 </body>
 

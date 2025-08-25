@@ -1229,6 +1229,22 @@
             background: #cdc7be50;
         }
     </style>
+    <style>
+        .cart-balink:hover,
+        .cart-balink:visited,
+        .cart-balink:active,
+        .cart-balink:focus {
+            color: #000;
+            /* keep same color for all states */
+        }
+
+        .cart-balink {
+            color: #000;
+            /* your desired color */
+            text-decoration: none;
+            /* remove underline */
+        }
+    </style>
 </head>
 
 <body>
@@ -1244,7 +1260,7 @@
                 <a href="/shop">Shop</a>
                 <a href="/collection">Collections</a>
                 <a href="/about" style="color: #b3934f;">About</a>
-                <a href="contact">Contact</a>
+                <a href="/contact">Contact</a>
             </nav>
 
             <!-- Icons -->
@@ -1255,8 +1271,8 @@
                         <i class="fas fa-heart"></i>
                     </a>
                 @endauth
-                <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
-                    <a href="/cart" class="link-cart">
+                <div class="icon cart-icon " ><!--onclick="toggleCart()"-->
+                    <a href="/cart" class="cart-balink">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-badge" id="cart-count">{{ $cartCount ?? 0 }}</span>
                     </a>

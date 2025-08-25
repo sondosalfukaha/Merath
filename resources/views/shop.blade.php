@@ -1076,7 +1076,7 @@
             /* remove underline */
         }
 
-        x .wishlist-link:hover,
+        .wishlist-link:hover,
         .wishlist-link:visited,
         .wishlist-link:active,
         .wishlist-link:focus {
@@ -1097,6 +1097,21 @@
         .cart-link:focus {
             color: #fff;
             /* keep same color for all states */
+        }
+
+        .cart-balink:hover,
+        .cart-balink:visited,
+        .cart-balink:active,
+        .cart-balink:focus {
+            color: #000;
+            /* keep same color for all states */
+        }
+
+        .cart-balink {
+            color: #000;
+            /* your desired color */
+            text-decoration: none;
+            /* remove underline */
         }
     </style>
 
@@ -1197,9 +1212,10 @@
                     </a>
                 @endauth
                 <div class="icon cart-icon" ><!--onclick="toggleCart()"-->
-                    <a href="/cart">
+                    <a href="/cart" class="cart-balink">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="cart-badge" id="cart-count">{{ $cartItems->count() }}</span>
+                        <span class="cart-badge" id="cart-count">{{ $cartCount ?? 0 }}</span>
+
                     </a>
                 </div>
                 <div class="menu-toggle icon" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
@@ -1212,9 +1228,9 @@
         <nav class="mobile" id="mobileMenu">
             <a href="/">Home</a>
             <a href="/shop" style="color: #b3934f;">Shop</a>
-            <a href="#">Collections</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+            <a href="/collection">Collections</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
         </nav>
     </header>
     <!--End NavBar-->

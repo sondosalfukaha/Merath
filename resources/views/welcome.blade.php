@@ -1389,11 +1389,11 @@
 
         <!-- Mobile Navigation -->
         <nav class="mobile" id="mobileMenu">
-            <a href="#">Home</a>
-            <a href="#">Shop</a>
-            <a href="#">Collections</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+            a href="/" style="color: #b3934f;">Home</a>
+            <a href="/shop">Shop</a>
+            <a href="/collection">Collections</a>
+            <a href="/about">About</a>
+            <a href="/contact">Contact</a>
         </nav>
     </header>
     <!--End NavBar-->
