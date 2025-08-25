@@ -1490,43 +1490,6 @@
                             }
                         });
                     });
-
-                    /* Cart
-                    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-                        btn.addEventListener('click', async function(e) {
-                            e.preventDefault();
-                            const productId = this.dataset.id;
-
-                            try {
-                                const response = await fetch(`/cart/add/${productId}`, {
-                                    method: 'POST',
-                                    headers: {
-                                        'X-Requested-With': 'XMLHttpRequest',
-                                        'X-CSRF-TOKEN': csrfToken
-                                    }
-                                });
-
-                                const result = await response.json();
-
-                                if (result.cartCount !== undefined) {
-                                    document.getElementById('cart-count').textContent = result
-                                        .cartCount;
-                                }
-
-                                // Show +1 animation
-                                const plus = document.getElementById('cart-plus');
-                                plus.style.display = 'block';
-                                plus.style.opacity = '1';
-                                setTimeout(() => plus.style.opacity = '0', 800);
-                                setTimeout(() => plus.style.display = 'none', 1000);
-
-                            } catch (err) {
-                                console.error(err);
-                                alert('Error adding to cart');
-                            }
-                        });
-                    });*/
-
                     // ✅ Attach events only for THIS card
                     card.querySelector('.add-to-cart-btn').addEventListener('click', async function(e) {
                         e.preventDefault();

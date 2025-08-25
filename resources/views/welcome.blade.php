@@ -1506,8 +1506,8 @@
                                     </form>
 
 
-                                    <form class="ajax-cart-form" method="POST" action="/cart/add"
-                                        style="display:inline;">
+                                    <form class="ajax-cart-form" method="POST"
+                                        action="{{ route('cart.add', $product->id) }}" style="display:inline;">
                                         @csrf
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                                         <button type="submit" class="icon-btn">
@@ -1813,26 +1813,33 @@
                                 body: formData,
                                 headers: {
                                     'X-Requested-With': 'XMLHttpRequest',
-
+                                    'X-CSRF-TOKEN': formData.get('_token') // <--- add this
                                 }
                             })
                             .then(res => res.json())
                             .then(data => {
-                                // Update cart count
-                                document.getElementById('cart-count').textContent = data.cartCount;
+                                if (data.success) {
+                                    // Update cart count
+                                    document.getElementById('cart-count').textContent = data
+                                        .cartCount;
 
-                                // Show +1 animation
-                                let plus = document.getElementById('cart-plus');
-                                plus.style.display = 'block';
-                                plus.style.opacity = '1';
-                                setTimeout(() => {
-                                    plus.style.opacity = '0';
-                                }, 800);
-                                setTimeout(() => {
-                                    plus.style.display = 'none';
-                                }, 1000);
+                                    // Show +1 animation
+                                    let plus = document.getElementById('cart-plus');
+                                    plus.style.display = 'block';
+                                    plus.style.opacity = '1';
+                                    setTimeout(() => plus.style.opacity = '0', 800);
+                                    setTimeout(() => plus.style.display = 'none', 1000);
+                                } else {
+                                    alert('Failed to add to cart');
+                                }
+                            })
+                            .catch(err => {
+                                console.error(err);
+                                alert('Server error');
                             });
+
                     });
+
                 });
 
 
