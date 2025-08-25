@@ -1105,7 +1105,7 @@
 <body>
     <!--+1 for add to cart-->
     <div id="cart-plus"
-        style="display:none; position: fixed; bottom:100px; left:50%; transform: translateX(-50%); font-size:70px; color:#b3934f85; font-weight:bold; z-index:9999; pointer-events:none;">
+        style="display:none; position: fixed; bottom:100px; left:50%; transform: translateX(-50%); font-size:70px; color:#b3934f9f; font-weight:bold; z-index:9999; pointer-events:none;">
         +1
     </div>
     <!-- Fixed Cart Icon -->
@@ -1491,7 +1491,7 @@
                         });
                     });
 
-                    // Cart
+                    /* Cart
                     document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
                         btn.addEventListener('click', async function(e) {
                             e.preventDefault();
@@ -1525,7 +1525,42 @@
                                 alert('Error adding to cart');
                             }
                         });
+                    });*/
+
+                    // ✅ Attach events only for THIS card
+                    card.querySelector('.add-to-cart-btn').addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        const productId = this.dataset.id;
+
+                        try {
+                            const response = await fetch(`/cart/add/${productId}`, {
+                                method: 'POST',
+                                headers: {
+                                    'X-Requested-With': 'XMLHttpRequest',
+                                    'X-CSRF-TOKEN': csrfToken
+                                }
+                            });
+
+                            const result = await response.json();
+
+                            if (result.cartCount !== undefined) {
+                                document.getElementById('cart-count').textContent = result.cartCount;
+                            }
+
+                            // Show +1 animation
+                            const plus = document.getElementById('cart-plus');
+                            if (plus) {
+                                plus.style.display = 'block';
+                                plus.style.opacity = '1';
+                                setTimeout(() => plus.style.opacity = '0', 800);
+                                setTimeout(() => plus.style.display = 'none', 1000);
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            alert('Error adding to cart');
+                        }
                     });
+
                 }
 
 
