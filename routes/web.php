@@ -32,8 +32,10 @@ Route::get('/', function () {
     $wishlists = Wishlist::all();
     $randomProduct = Product::inRandomOrder()->first();
     $cartItems = Cart::where('user_id', Auth::id())->get();
+    $wishlistCount = Wishlist::where('user_id', auth()->id())->count();
 
-    return view('welcome', compact('categories','products','featuredProducts', 'bestSellers','wishlists','randomProduct','cartItems'));
+
+    return view('welcome', compact('categories','products','featuredProducts', 'bestSellers','wishlists','randomProduct','cartItems','wishlistCount'));
 });
 
 Route::get('/shop', function () {

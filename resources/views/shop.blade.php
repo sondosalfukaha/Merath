@@ -1165,7 +1165,7 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
-    ">0</span>
+    ">{{ $wishlistCount ?? 0 }}</span>
     </div>
 
     <!-- Floating +1 heart animation -->

@@ -1312,7 +1312,8 @@
             align-items: center;
             justify-content: center;
             font-size: 12px;
-    ">{{ $wishlist_count ?? 0 }}</span>
+    ">
+            {{ $wishlistCount ?? 0 }}</span>
     </div>
 
     <!-- Floating +1 ❤️-->
@@ -1844,7 +1845,6 @@
 
 
 
-                // Wishlist AJAX
                 // Wishlist AJAX
                 document.querySelectorAll('.ajax-wishlist-form').forEach(form => {
                     form.addEventListener('submit', async function(e) {

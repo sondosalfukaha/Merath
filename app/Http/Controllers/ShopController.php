@@ -5,6 +5,8 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Cart;
+use App\Models\Wishlist;
+
 
 class ShopController extends Controller
 {
@@ -18,6 +20,7 @@ class ShopController extends Controller
         ? \App\Models\Cart::where('user_id', auth()->id())->get()
         : collect(); // empty collection if not logged in
 
-        return view('shop', compact('products','categories','cartItems'));
+        $wishlistCount = Wishlist::where('user_id', auth()->id())->count();
+        return view('shop', compact('products','categories','cartItems','wishlistCount'));
     }
 }
