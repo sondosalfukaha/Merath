@@ -59,39 +59,37 @@ class CartController extends Controller
         Cart::where('user_id', Auth::id())->delete();
         return back()->with('success', 'Cart cleared');
     }
-    public function add(Request $request)
+ public function add($productId)
 {
-    if (!Auth::check()) {
-        return redirect('/login')->with('error', 'Please login to add to cart');
-    }
+    try {
+        $cart = Cart::where('user_id', auth()->id())->where('product_id', $productId)->first();
 
-    $cartItem = Cart::where('user_id', Auth::id())
-                    ->where('product_id', $request->product_id)
-                    ->first();
+        if ($cart) {
+            $cart->quantity += 1;
+            $cart->save();
+        } else {
+            Cart::create([
+                'user_id' => auth()->id(),
+                'product_id' => $productId,
+                'quantity' => 1
+            ]);
+        }
 
-    if ($cartItem) {
-        $cartItem->quantity += 1;
-        $cartItem->save();
-    } else {
-        Cart::create([
-            'user_id' => Auth::id(),
-            'product_id' => $request->product_id,
-            'quantity' => 1
-        ]);
-    }
+        $cartCount = Cart::where('user_id', auth()->id())->sum('quantity');
 
-    // ✅ Get total count of items in this user's cart
-    $cartCount = Cart::where('user_id', Auth::id())->sum('quantity');
-
-    if ($request->ajax()) {
         return response()->json([
-            'cartCount' => $cartCount,
-            'message' => 'Product added to cart!'
+            'success' => true,
+            'cartCount' => $cartCount
         ]);
-    }
 
-    return back();
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
 }
+
 
 
 

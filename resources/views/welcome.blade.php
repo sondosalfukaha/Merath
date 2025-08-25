@@ -1188,11 +1188,11 @@
             opacity: 1;
         }
 
-        .cart-link {
+         {
             color: #fff;
             /* your desired color */
             text-decoration: none;
-            /* remove underline */
+            /*.cart-link remove underline */
         }
 
         .cart-link:hover,
@@ -1216,6 +1216,21 @@
             /* your desired color */
             text-decoration: none;
             /* remove underline */
+        }
+
+        .wishlist-link {
+            color: #fff;
+            /* your desired color */
+            text-decoration: none;
+            /* remove underline */
+        }
+
+        .wishlist-link:hover,
+        .wishlist-link:visited,
+        .wishlist-link:active,
+        .wishlist-link:focus {
+            color: #fff;
+            /* keep same color for all states */
         }
     </style>
 
@@ -1262,6 +1277,59 @@
                 justify-content: center;
                 font-size: 12px;
     ">{{ $cartCount ?? 0 }}</span>
+    </div>
+    <!-- Fixed Wishlist Icon -->
+    <div id="fixed-wishlist"
+        style="
+        position: fixed;
+        bottom: 180px; /* above cart */
+        left: 20px;
+        background: #b3934f;
+        color: white;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        cursor: pointer;
+    ">
+        <a href="/wishlist" class="wishlist-link">
+            <i class="fas fa-heart"></i>
+        </a>
+        <span id="wishlist-count"
+            style="
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+    ">{{ $wishlist_count ?? 0 }}</span>
+    </div>
+
+    <!-- Floating +1 ❤️-->
+    <div id="wishlist-plus"
+        style="
+        display: none;
+        position: fixed;
+        bottom: 180px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 60px;
+        color: rgba(179, 147, 79, 0.6);
+        font-weight: bold;
+        z-index: 9999;
+        pointer-events: none;
+    ">
+        ❤️
     </div>
 
     <!-- Plus Notification -->
@@ -1517,9 +1585,10 @@
 
                                     <!-- Overlay Icons -->
                                     <div class="icon-overlay">
-                                        <form action="{{ route('wishlist.add', $product->id) }}" method="POST"
+                                        <form class="ajax-wishlist-form" method="POST" action="/wishlist/add"
                                             style="display:inline;">
                                             @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
                                             <button type="submit" class="icon-btn">
                                                 <i class="fa-regular fa-heart" style="color: #b3934f"></i>
                                                 <!-- outline -->
@@ -1769,6 +1838,7 @@
 
 
                 // Wishlist AJAX
+                // Wishlist AJAX
                 document.querySelectorAll('.ajax-wishlist-form').forEach(form => {
                     form.addEventListener('submit', async function(e) {
                         e.preventDefault();
@@ -1788,13 +1858,23 @@
 
                             const result = await response.json();
 
-                            // Example: update wishlist badge
+                            // ✅ Update wishlist badge
                             if (result.wishlist_count !== undefined) {
                                 document.getElementById('wishlist-count').textContent = result
                                     .wishlist_count;
                             }
 
-                            alert(result.message || 'Wishlist updated!');
+                            // ✅ Show floating ❤️ animation
+                            let plus = document.getElementById('wishlist-plus');
+                            plus.style.display = 'block';
+                            plus.style.opacity = '1';
+                            setTimeout(() => {
+                                plus.style.opacity = '0';
+                            }, 800);
+                            setTimeout(() => {
+                                plus.style.display = 'none';
+                            }, 1000);
+
                         } catch (err) {
                             console.error(err);
                             alert('Error updating wishlist.');

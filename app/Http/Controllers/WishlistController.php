@@ -9,7 +9,7 @@ use App\Models\Product;
 use App\Models\Cart;
 class WishlistController extends Controller
 {
-    public function add($product_id)
+    public function add2($product_id)
     {
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Please login to add to wishlist.');
@@ -40,6 +40,11 @@ class WishlistController extends Controller
         $cartItems = auth()->check()
         ? \App\Models\Cart::where('user_id', auth()->id())->get()
         : collect(); // empty collection if not logged in
+        // ✅ Get wishlist count for logged-in user
+    $wishlist_count = 0;
+    if (auth()->check()) {
+        $wishlist_count = \App\Models\Wishlist::where('user_id', auth()->id())->count();
+    }
         return view('wishlist', compact('wishlists','products','cartItems'));//products - > test
     }
 
@@ -107,6 +112,37 @@ $wishlists = Wishlist::where('user_id', Auth::id())->get();
         'wishlistCount' => $wishlists,
     ]);
 }
+ public function add(Request $request)
+{
+    $userId = auth()->id();
+    $productId = $request->product_id;
+
+    // Check if the item already exists in the wishlist
+    $exists = Wishlist::where('user_id', $userId)
+                      ->where('product_id', $productId)
+                      ->exists();
+
+    if (!$exists) {
+        Wishlist::create([
+            'user_id' => $userId,
+            'product_id' => $productId,
+        ]);
+
+        $message = 'Item added to wishlist!';
+    } else {
+        $message = 'Item already in wishlist!';
+    }
+
+    $wishlist_count = Wishlist::where('user_id', $userId)->count();
+
+    // Return JSON for JS
+    return response()->json([
+        'success' => true,
+        'message' => $message,
+        'wishlist_count' => $wishlist_count,
+    ]);
+}
+
 }
 
 

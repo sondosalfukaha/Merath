@@ -1068,10 +1068,111 @@
             font-size: 13px;
         }
     </style>
+    <style>
+        .wishlist-link {
+            color: #fff;
+            /* your desired color */
+            text-decoration: none;
+            /* remove underline */
+        }
+
+        x .wishlist-link:hover,
+        .wishlist-link:visited,
+        .wishlist-link:active,
+        .wishlist-link:focus {
+            color: #fff;
+            /* keep same color for all states */
+        }
+
+        .cart-link {
+            color: #fff;
+            /* your desired color */
+            text-decoration: none;
+            /* remove underline */
+        }
+
+        .cart-link:hover,
+        .cart-link:visited,
+        .cart-link:active,
+        .cart-link:focus {
+            color: #fff;
+            /* keep same color for all states */
+        }
+    </style>
 
 </head>
 
 <body>
+    <!--+1 for add to cart-->
+    <div id="cart-plus"
+        style="display:none; position: fixed; bottom:100px; left:50%; transform: translateX(-50%); font-size:70px; color:#b3934f85; font-weight:bold; z-index:9999; pointer-events:none;">
+        +1
+    </div>
+    <!-- Fixed Cart Icon -->
+    <div id="fixed-cart"
+        style="
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: #b3934f;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            cursor: pointer;
+        ">
+        <a href="/cart" class="cart-link">
+            <i class="fas fa-shopping-cart"></i>
+        </a>
+
+        <span id="cart-count"
+            style="
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: red;
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+    ">{{ $cartCount ?? 0 }}</span>
+    </div>
+    <!-- Fixed Wishlist Icon -->
+    <div id="fixed-wishlist"
+        style="position: fixed; bottom: 180px; right: 20px; background: #b3934f; color: white; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; z-index: 1000; cursor: pointer;">
+        <a href="/wishlist" class="wishlist-link">
+            <i class="fas fa-heart"></i>
+        </a>
+        <span id="wishlist-count"
+            style="
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+    ">0</span>
+    </div>
+
+    <!-- Floating +1 heart animation -->
+    <div id="wishlist-plus"
+        style="display:none; position: fixed; bottom: 180px; left: 50%; transform: translateX(-50%); font-size: 60px; color: rgba(179, 147, 79, 0.6); font-weight: bold; z-index: 9999; pointer-events: none;">
+        ❤️</div>
+
     <!--Start NavBar-->
     <header>
         <div class="container">
@@ -1304,6 +1405,7 @@
     </footer>
     <!--footer-->
 
+
     <script>
         const csrfToken = '{{ csrf_token() }}'; // server renders this value
 
@@ -1329,35 +1431,108 @@
                 }
 
                 card.innerHTML = `
-            <div class="produt-card2">
-                <a href="/product/${product.id}">
-                    <div class="product-image-container">
-                        ${labelHTML}
-                        <img src="${imageUrl}" alt="${product.name}">
+                    <div class="produt-card2">
+                        <a href="/product/${product.id}">
+                            <div class="product-image-container">
+                                ${labelHTML}
+                                <img src="${imageUrl}" alt="${product.name}">
+                            </div>
+                        </a>
+                        <div class="info">
+                            <p class="categoryname">${product.category.name}</p>
+                            <p class="getcolorOfprice">${product.price} JD</p>
+                        </div>
+
+                        <div class="icon-overlay">
+                            <button class="icon-btn wishlist-btn" data-id="${product.id}">
+                                <i class="fa-regular fa-heart" style="color: #b3934f"></i>
+                            </button>
+                            <button class="icon-btn add-to-cart-btn" data-id="${product.id}">
+                                <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
+                            </button>
+                        </div>
                     </div>
-                </a>
-                <div class="info">
-                    <p class="categoryname">${product.category.name}</p>
-                    <p class="getcolorOfprice">${product.price} JD</p>
-                </div>
+                    `;
 
-                <div class="icon-overlay">
-    <form action="/wishlist/add/${product.id}" method="POST" style="display:inline;">
-        @csrf
-        <button type="submit" class="icon-btn">
-            <i class="fa-regular fa-heart" style="color: #b3934f"></i>
-        </button>
-    </form>
-    <button class="icon-btn add-to-cart-btn" data-id="${product.id}">
-        <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
-    </button>
-</div>
+                function attachProductEvents() {
+                    // Wishlist
+                    document.querySelectorAll('.wishlist-btn').forEach(btn => {
+                        btn.addEventListener('click', async function(e) {
+                            e.preventDefault();
+                            const productId = this.dataset.id;
 
-            </div>
-        `;
+                            try {
+                                const response = await fetch(`/wishlist/add/${productId}`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest',
+                                        'X-CSRF-TOKEN': csrfToken
+                                    }
+                                });
+
+                                const result = await response.json();
+
+                                if (result.wishlist_count !== undefined) {
+                                    document.getElementById('wishlist-count').textContent =
+                                        result.wishlist_count;
+                                }
+
+                                // Show floating ❤️ animation
+                                const plus = document.getElementById('wishlist-plus');
+                                plus.style.display = 'block';
+                                plus.style.opacity = '1';
+                                setTimeout(() => plus.style.opacity = '0', 800);
+                                setTimeout(() => plus.style.display = 'none', 1000);
+
+                            } catch (err) {
+                                console.error(err);
+                                alert('Error adding to wishlist');
+                            }
+                        });
+                    });
+
+                    // Cart
+                    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+                        btn.addEventListener('click', async function(e) {
+                            e.preventDefault();
+                            const productId = this.dataset.id;
+
+                            try {
+                                const response = await fetch(`/cart/add/${productId}`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-Requested-With': 'XMLHttpRequest',
+                                        'X-CSRF-TOKEN': csrfToken
+                                    }
+                                });
+
+                                const result = await response.json();
+
+                                if (result.cartCount !== undefined) {
+                                    document.getElementById('cart-count').textContent = result
+                                        .cartCount;
+                                }
+
+                                // Show +1 animation
+                                const plus = document.getElementById('cart-plus');
+                                plus.style.display = 'block';
+                                plus.style.opacity = '1';
+                                setTimeout(() => plus.style.opacity = '0', 800);
+                                setTimeout(() => plus.style.display = 'none', 1000);
+
+                            } catch (err) {
+                                console.error(err);
+                                alert('Error adding to cart');
+                            }
+                        });
+                    });
+                }
+
 
 
                 grid.appendChild(card);
+                attachProductEvents(); // attach events to newly created buttons
+
             });
 
             document.getElementById('productCount').innerText = products.length;
@@ -1395,7 +1570,6 @@
             });
         };
     </script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             fetch('/price-range')
@@ -1523,6 +1697,86 @@
             const mobileFilter = document.getElementById('mobileFilterContent');
             mobileFilter.classList.toggle('hidden');
         }
+    </script>
+    <script>
+        // Cart
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                const productId = this.dataset.id;
+
+                try {
+                    const response = await fetch(`/cart/add/${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    });
+
+                    const result = await response.json();
+
+                    if (result.cartCount !== undefined) {
+                        document.getElementById('cart-count').textContent = result.cartCount;
+                    }
+
+                    // ✅ Safely show +1 animation
+                    const plus = document.getElementById('cart-plus');
+                    if (plus) {
+                        plus.style.display = 'block';
+                        plus.style.opacity = '1';
+                        setTimeout(() => plus.style.opacity = '0', 800);
+                        setTimeout(() => plus.style.display = 'none', 1000);
+                    }
+
+                } catch (err) {
+                    console.error(err);
+                    alert('Error adding to cart');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.querySelectorAll('.icon-overlay form').forEach(form => {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const url = this.action;
+                const data = new FormData(this);
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: data
+                    });
+
+                    const result = await response.json();
+
+                    // Update wishlist badge
+                    const wishlistBadge = document.getElementById('wishlist-count');
+                    if (wishlistBadge && result.wishlist_count !== undefined) {
+                        wishlistBadge.textContent = result.wishlist_count;
+                    }
+
+                    // Show +1 heart animation
+                    const plus = document.getElementById('wishlist-plus');
+                    if (plus) {
+                        plus.style.display = 'block';
+                        plus.style.opacity = '1';
+                        setTimeout(() => plus.style.opacity = '0', 800);
+                        setTimeout(() => plus.style.display = 'none', 1000);
+                    }
+
+                } catch (err) {
+                    console.error(err);
+                    alert('Error adding to wishlist.');
+                }
+            });
+        });
     </script>
 </body>
 

@@ -15,6 +15,7 @@ class HomeController extends Controller
     $categories = Category::all(); // fetch all categories
     $products = Product::all(); // fetch all categories
 
+
     return view('admin.dashboard', compact('categories','products'));
     }
 }

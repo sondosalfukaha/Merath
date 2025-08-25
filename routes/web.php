@@ -131,7 +131,8 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
 
 
-Route::post('/wishlist/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
+//Route::post('/wishlist/add/{product}', [WishlistController::class, 'add'])->name('wishlist.add');
+Route::post('/wishlist/add/', [WishlistController::class, 'add'])->name('wishlist.add');
 
 
 
