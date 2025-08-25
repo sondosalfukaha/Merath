@@ -15,7 +15,8 @@ use App\Models\Cart;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\UserController;
-
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ContactController;
 
 
 
@@ -135,7 +136,23 @@ Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.a
 Route::post('/wishlist/add/', [WishlistController::class, 'add'])->name('wishlist.add');
 
 
+//about.blade.php page
+Route::get('/about', function () {
+    return view('about'); // this will load resources/views/about.blade.php
+})->name('about');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+//contact.blade.php
 
+// Public contact form
+Route::get('/contact', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+
+// Admin routes (with middleware)
+Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('/contacts', [ContactController::class, 'adminIndex'])->name('admin.contacts.index');
+    Route::get('/contacts/{id}', [ContactController::class, 'show'])->name('admin.contacts.show');
+    Route::delete('/contacts/{id}', [ContactController::class, 'destroy'])->name('admin.contacts.destroy');
+});
 
 
 

@@ -155,6 +155,12 @@
                                     Categories
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#Contact" data-bs-toggle="tab">
+                                    <i style="font-weight: bold">?</i>
+                                    Ask to Contact
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -588,7 +594,62 @@
                                 </table>
                             </div>
                         </div>
+                        <!-- Orders Tab -->
+                        <div class="tab-pane fade" id="Contact">
+                            <div
+                                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                                <h1 class="h2">Contact</h1>
+                            </div>
 
+                            <div class="table-responsive">
+                                <table class="table table-striped table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th class="px-4 py-2 border text-center">Contact ID</th>
+                                            <th class="px-4 py-2 border text-center">Name</th>
+                                            <th class="px-4 py-2 border text-center">Email</th>
+                                            <th class="px-4 py-2 border text-center">Subject</th>
+                                            <th class="px-4 py-2 border text-center">Date</th>
+                                            <th class="px-4 py-2 border text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        @forelse(($contacts ?? collect()) as $contact)
+                                            <tr>
+                                                <td>{{ $contact->id }}</td>
+                                                <td>{{ $contact->name }}</td>
+                                                <td>{{ $contact->email }}</td>
+                                                <td>{{ $contact->subject }}</td>
+                                                <td>{{ $contact->created_at->format('Y-m-d H:i') }}</td>
+                                                <td>
+                                                    <a href="{{ route('admin.contacts.show', $contact) }}"
+                                                        class="btn btn-sm btn-info">View</a>
+                                                    <form action="{{ route('admin.contacts.destroy', $contact) }}"
+                                                        method="POST" style="display:inline;">
+                                                        @csrf @method('DELETE')
+                                                        <button class="btn btn-sm btn-danger"
+                                                            onclick="return confirm('Delete this message?')">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="6" class="text-center">No messages found.</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+
+                                    {{-- Only render pagination if using paginate() above --}}
+                                    @if (isset($contacts) && method_exists($contacts, 'links'))
+                                        <div class="mt-3">
+                                            {{ $contacts->links() }}
+                                        </div>
+                                    @endif
+
+                                </table>
+                            </div>
+
+                        </div>
 
 
 

@@ -3,19 +3,109 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Merath Navbar</title>
-    <link rel="preload" href="background1.jpg" as="image">
-    <link rel="preload" href="background2.jpg" as="image">
-    <link rel="preload" href="background33.jpg" as="image">
-    <link rel="preload" href="background4.jpg" as="image">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Merath</title>
     @once
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
             integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
     @endonce
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
 
+        .hero {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
 
+        .hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-overlay h1 {
+            color: #fff;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            padding: 4rem 1rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        h2,
+        h3 {
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .grid-3 img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .hero-overlay h1 {
+                font-size: 2rem;
+            }
+
+            .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
     <style>
         @media(max-width:767px) {
 
@@ -1139,217 +1229,9 @@
             background: #cdc7be50;
         }
     </style>
-    <style>
-        #scrollToTop {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            display: none;
-            background-color: #b3934f;
-            color: white;
-            padding: 10px 12px;
-            border-radius: 50%;
-            font-size: 18px;
-            z-index: 9999;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        #scrollToTop:hover {
-            background-color: #555;
-        }
-
-        #scrollToTop2 {
-            position: fixed;
-            bottom: 25px;
-            left: 20px;
-            display: none;
-            background-color: #b3934f;
-            color: white;
-            padding: 10px 12px;
-            border-radius: 50%;
-            font-size: 18px;
-            z-index: 9999;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        #scrollToTop2:hover {
-            background-color: #555;
-        }
-
-        #cart-plus {
-            transition: all 0.5s ease-out;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        #cart-plus.show {
-            transform: translateX(-50%) translateY(-30px);
-            opacity: 1;
-        }
-
-            {
-            color: #fff;
-            /* your desired color */
-            text-decoration: none;
-            /*.cart-link remove underline */
-        }
-
-        .cart-link:hover,
-        .cart-link:visited,
-        .cart-link:active,
-        .cart-link:focus {
-            color: #fff;
-            /* keep same color for all states */
-        }
-
-        .link-cart:hover,
-        .link-cart:visited,
-        .link-cart:active,
-        .link-cart:focus {
-            color: #000;
-            /* keep same color for all states */
-        }
-
-        .link-cart {
-            color: #000;
-            /* your desired color */
-            text-decoration: none;
-            /* remove underline */
-        }
-
-        .wishlist-link {
-            color: #fff;
-            /* your desired color */
-            text-decoration: none;
-            /* remove underline */
-        }
-
-        .wishlist-link:hover,
-        .wishlist-link:visited,
-        .wishlist-link:active,
-        .wishlist-link:focus {
-            color: #fff;
-            /* keep same color for all states */
-        }
-    </style>
-
 </head>
 
-<a href="#" id="scrollToTop" title="Back to Top">
-    <i class="fa-solid fa-arrow-up"></i>
-</a>
-
 <body>
-    <!-- Fixed Cart Icon -->
-    <div id="fixed-cart"
-        style="
-            position: fixed;
-            bottom: 100px;
-            left: 20px;
-            background: #b3934f;
-            color: white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            cursor: pointer;
-        ">
-        <a href="/cart" class="cart-link">
-            <i class="fas fa-shopping-cart"></i>
-        </a>
-
-        <span id="cart-count"
-            style="
-                position: absolute;
-                top: -8px;
-                right: -8px;
-                background: red;
-                color: white;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
-    ">{{ $cartCount ?? 0 }}</span>
-    </div>
-    <!-- Fixed Wishlist Icon -->
-    <div id="fixed-wishlist"
-        style="
-        position: fixed;
-        bottom: 180px; /* above cart */
-        left: 20px;
-        background: #b3934f;
-        color: white;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        cursor: pointer;
-    ">
-        <a href="/wishlist" class="wishlist-link">
-            <i class="fas fa-heart"></i>
-        </a>
-        <span id="wishlist-count"
-            style="
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: red;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-    ">{{ $wishlist_count ?? 0 }}</span>
-    </div>
-
-    <!-- Floating +1 ❤️-->
-    <div id="wishlist-plus"
-        style="
-        display: none;
-        position: fixed;
-        bottom: 180px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 60px;
-        color: rgba(179, 147, 79, 0.6);
-        font-weight: bold;
-        z-index: 9999;
-        pointer-events: none;
-    ">
-        ❤️
-    </div>
-
-    <!-- Plus Notification -->
-    <div id="cart-plus"
-        style="
-            display: none;
-            position: fixed;
-            bottom: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 70px;
-            color: #b3934f85;
-            font-weight: bold;
-            z-index: 9999;
-            pointer-events: none;
-        ">
-        +1
-    </div>
-
-
     <!--Start NavBar-->
     <header>
         <div class="container">
@@ -1358,11 +1240,11 @@
 
             <!-- Desktop Navigation -->
             <nav class="desktop">
-                <a href="/" style="color: #b3934f;">Home</a>
+                <a href="/">Home</a>
                 <a href="/shop">Shop</a>
                 <a href="/collection">Collections</a>
-                <a href="/about">About</a>
-                <a href="/contact">Contact</a>
+                <a href="/about" style="color: #b3934f;">About</a>
+                <a href="contact">Contact</a>
             </nav>
 
             <!-- Icons -->
@@ -1396,495 +1278,147 @@
         </nav>
     </header>
     <!--End NavBar-->
-    <!--Start Hero-->
-    <div class="hero-container">
-        <div class="background"></div>
-        <div class="overlay"></div>
+    <!-- Hero Section -->
+    <div class="hero">
+        <img src="https://images.pexels.com/photos/6207772/pexels-photo-6207772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+            alt="About Merath">
         <div class="hero-overlay">
-            <div class="hero-content">
-                <h1>Discover Artistry<br>for Your Home</h1>
+            <h1>Our Story</h1>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="container">
+        <div class="text-center" style="margin-bottom: 4rem;">
+            <h2>Crafting Beauty Since 2015</h2>
+            <p>
+                At Merath, we believe in the transformative power of art and craftsmanship.
+                Our journey began with a simple vision: to bring exceptional artisanal pieces into modern homes,
+                creating spaces that inspire and delight.
+            </p>
+        </div>
+
+        <div class="grid-2">
+            <div>
+                <h3>Our Philosophy</h3>
                 <p>
-                    Exquisite ceramic and sculptural pieces that blend modern design with timeless craftsmanship
+                    We celebrate the beauty of handcrafted art, understanding that each piece tells a unique
+                    story. Our artisans pour their heart and soul into every creation, ensuring that each
+                    item carries the warmth of human touch and the excellence of traditional craftsmanship.
                 </p>
-                <div class="button-group">
-                    <a href="{{ url('/shop') }}" class="btn btn-primary">Shop Collection</a>
-                    <a href="{{ url('/about') }}" class="btn btn-outline">Discover Our Story</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--End Hero-->
-    <div class="section">
-        <div class="container">
-            <div class="section-title">
-                <h2>Crafted with Excellence</h2>
                 <p>
-                    Each piece in our collection is meticulously crafted by skilled artisans,
-                    bringing together contemporary design and traditional craftsmanship.
+                    Every Merath piece is more than just a decorative object – it's a testament to the
+                    enduring value of artisanal craft in our modern world.
                 </p>
             </div>
-
-            <div class="features">
-                <div class="feature">
-                    <div class="icon-circle">
-                        <span class="step-number">01</span>
-                    </div>
-                    <h3>Curated Selection</h3>
-                    <p>Our collection features handpicked pieces that blend artistry with functionality</p>
-                </div>
-
-                <div class="feature">
-                    <div class="icon-circle">
-                        <span class="step-number">02</span>
-                    </div>
-                    <h3>Artisan Crafted</h3>
-                    <p>Each piece is meticulously handcrafted by skilled artisans who honor traditional techniques</p>
-                </div>
-
-                <div class="feature">
-                    <div class="icon-circle">
-                        <span class="step-number">03</span>
-                    </div>
-                    <h3>Timeless Design</h3>
-                    <p>Our designs transcend trends, creating pieces that will be cherished for generations</p>
-                </div>
+            <div>
+                <h3>Our Commitment</h3>
+                <p>
+                    We are committed to supporting traditional craftsmanship while embracing contemporary
+                    design sensibilities. This fusion of old and new creates pieces that are both timeless
+                    and relevant.
+                </p>
+                <p>
+                    Sustainability and ethical practices are at the heart of everything we do,
+                    from material selection to production processes.
+                </p>
             </div>
         </div>
-    </div>
-    <!---->
 
-
-    <div class="containerb">
-        <h2 class="title">Shop by Category</h2>
-
-        <div class="grid">
-            @foreach ($categories->take(4) as $category)
-                <a href="{{ url('/shop?category=' . $category->name) }}" class="category">
-
-                    <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}">
-                    <div class="overlay2">
-                        <h3>{{ $category->name }}</h3>
-                        <p>{{ $category->description }}</p>
-                        <span class="shop-now">Shop Now <i class="fas fa-arrow-right"></i></span>
-                    </div>
-                </a>
-            @endforeach
-        </div>
-    </div>
-
-    <div class="py-16 cont">
-        <div class="containerc">
-            <div class="slider-wrapper">
-                <div class="slider-header">
-                    <h2 class="h2title title">New Arrivals</h2>
-                    <div class="slider-buttons">
-                        <button onclick="scrollSlider('left')">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <button onclick="scrollSlider('right')">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="slider" id="productSlider">
-                    @foreach ($products as $product)
-                        <div class="product-card product-card1">
-                            <div class="product-image-container">
-                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-
-                                <!-- Overlay Icons -->
-                                <div class="icon-overlay">
-                                    <form class="ajax-wishlist-form" method="POST" action="/wishlist/add"
-                                        style="display:inline;">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <button type="submit" class="icon-btn">
-                                            <i class="fa-regular fa-heart" style="color: #b3934f"></i>
-                                            <!-- outline -->
-                                        </button>
-                                    </form>
-
-
-                                    <form class="ajax-cart-form" method="POST" action="/cart/add"
-                                        style="display:inline;">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                        <button type="submit" class="icon-btn">
-                                            <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-
-                            <div class="info">
-                                <h3>{{ $product->name }}</h3>
-                                <p class="categoryname">{{ $product->category->name }}</p>
-                                <p class="getcolorOfprice">{{ $product->price }} JD</p>
-                            </div>
-
-
-                        </div>
-                    @endforeach
-                </div>
-
-
+        <div class="text-center" style="margin-bottom: 4rem;">
+            <h3>Our Artisans</h3>
+            <p>
+                Behind every Merath piece is a skilled artisan with years of experience and dedication
+                to their craft. We work with a select group of craftspeople who share our passion for
+                excellence and attention to detail.
+            </p>
+            <div class="grid-3">
+                <img src="https://images.pexels.com/photos/6207780/pexels-photo-6207780.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    alt="Artisan at work">
+                <img src="https://images.pexels.com/photos/6207785/pexels-photo-6207785.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    alt="Crafting process">
+                <img src="https://images.pexels.com/photos/6207787/pexels-photo-6207787.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    alt="Final touches">
             </div>
         </div>
-        <hr>
-        <div class="essence-section">
-            <div class="essence-container">
-                <div class="essence-grid">
-                    <div>
-                        <img src="{{ asset('storage/' . $randomProduct->image) }}" alt="{{ $randomProduct->name }}"
-                            alt="Featured Collection" class="essence-image" />
+
+        <div class="text-center">
+            <h3>Join Our Journey</h3>
+            <p>
+                We invite you to be part of our story. Each piece you choose becomes part of your own
+                narrative, adding beauty and meaning to your space. Discover the Merath difference –
+                where tradition meets contemporary elegance.
+            </p>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <hr>
+    <!--footer-->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <!-- Brand Column -->
+                <div>
+                    <h2 class="footer-title">Merath</h2>
+                    <p class="footer-desc">
+                        Discover exquisite art pieces for your home that blend timeless craftsmanship with modern
+                        aesthetics.
+                    </p>
+                    <div class="footer-icons">
+                        <a href="#" class="footer-icon">📸</a>
+                        <a href="#" class="footer-icon">📘</a>
+                        <a href="#" class="footer-icon">🐦</a>
+                        <a href="#" class="footer-icon">✉️</a>
                     </div>
-                    <div class="essence-text">
-                        <h2 class="essence-title">The Essence Collection</h2>
-                        <p class="essence-paragraph">
-                            Inspired by the natural world, our Essence Collection brings organic forms and
-                            textures into your home. Each piece tells a story of craftsmanship and connection
-                            to the earth.
-                        </p>
-                        <p class="essence-paragraph mb-8">
-                            Discover vessels, sculptures, and decorative objects that celebrate the beauty
-                            of imperfection and the warmth of handmade artistry.
-                        </p>
-                        <a href="/shop" class="essence-button">
-                            Explore Collection
+                </div>
+
+                <!-- Shop Column -->
+                <div>
+                    <h3 class="footer-heading">Shop</h3>
+                    <ul class="footer-links">
+                        <li><a href="/shop">All Products</a></li>
+                        @foreach ($categories as $category)
+                            <li><a href="/shop">{{ $category->name }}</a></li>
+                        @endforeach
+
+                    </ul>
+                </div>
+
+                <!-- Info Column -->
+                <div>
+                    <h3 class="footer-heading">Information</h3>
+                    <ul class="footer-links">
+                        <li><a href="/about">About Us</a></li>
+                        <li><a href="/shipping">Shipping & Returns</a></li>
+                        <li><a href="/privacy">Privacy Policy</a></li>
+                        <li><a href="/terms">Terms & Conditions</a></li>
+                        <li><a href="/faq">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter Column -->
+                <div>
+                    <h3 class="footer-heading">Join Our Family on Instagram</h3>
+                    <p class="footer-desc">Follow to track updates on new collections and special offers.</p>
+
+                    @csrf
+                    <div class="footer-form">
+                        <a href="https://www.instagram.com/merathart/" target="_blank">
+                            <button type="submit" class="footer-button">Follow Us</button>
                         </a>
                     </div>
+
                 </div>
+            </div>
 
-                <!-- Product Slider Include -->
-
+            <!-- Bottom Bar -->
+            <div class="footer-bottom">
+                <p>&copy; {{ date('Y') }} Merath. All rights reserved.</p>
             </div>
         </div>
-        <hr>
-        <div class="py-16">
-            <div class="containerc">
-                <div class="slider-wrapper">
-                    <div class="slider-header">
-                        <h2 class="title h2title">Best Sellers</h2>
-                        <div class="slider-buttons">
-                            <button onclick="scrollSlider('left')">
-                                <i class="fas fa-chevron-left"></i>
-                            </button>
-                            <button onclick="scrollSlider('right')">
-                                <i class="fas fa-chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="slider" id="productSlider">
-
-                        @forelse ($bestSellers as $product)
-                            <div class="product-card product-card2">
-                                <div class="product-image-container">
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-
-                                    <!-- Overlay Icons -->
-                                    <div class="icon-overlay">
-                                        <form class="ajax-wishlist-form" method="POST" action="/wishlist/add"
-                                            style="display:inline;">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <button type="submit" class="icon-btn">
-                                                <i class="fa-regular fa-heart" style="color: #b3934f"></i>
-                                                <!-- outline -->
-                                            </button>
-                                        </form>
-                                        <form class="ajax-cart-form" method="POST" action="/cart/add"
-                                            style="display:inline;">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <button type="submit" class="icon-btn">
-                                                <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
-
-                                <div class="info">
-                                    <h3>{{ $product->name }}</h3>
-                                    <h5 class="categoryname">{{ $product->category->name }}</h5>
-                                    <p class="getcolorOfprice">JD{{ $product->price }}</p>
-                                </div>
-                            </div>
-                        @empty
-                            <p>No best sellers available yet.</p>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="featured-section">
-            <div class="featured-container">
-                <div class="featured-header">
-                    <h2 class="featured-title">Featured Products</h2>
-                    <p class="featured-description">
-                        Discover our most distinctive pieces, selected for their exceptional design and craftsmanship
-                    </p>
-                </div>
-
-                <div class="featured-grid">
-
-                    @foreach ($featuredProducts as $product)
-                        <div class="featured-card group">
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}"
-                                class="featured-image group-hover-scale">
-                            <div class="featured-overlay">
-                                <h3 class="featured-name">{{ $product->name }}</h3>
-                                <p class="featured-price">JOD {{ $product->price }}</p>
-                                <a href="/product/{{ $product->id }}" class="featured-button">View Details</a>
-                            </div>
-
-                        </div>
-                    @endforeach
-
-                </div>
-            </div>
-        </div>
-
-        <div class="newsletter-section">
-            <div class="container">
-                <div class="text-center mb-12">
-                    <h2 class="newsletter-title">Join Our Family on Instagram</h2>
-                    <p class="newsletter-subtitle">
-                        Stay updated on new collections, exclusive offers, and design inspiration
-                    </p>
-                </div>
-                <div class="form-wrapper">
-                    <h4>Follow Us on Instagram</h4>
-
-
-                    <img src="{{ asset('images/1.png') }}" width="70px" alt="">
-
-
-                    <a href="https://www.instagram.com/merathart/" target="_blank">
-                        <button style="margin-top:5px">Merath Art</button>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <!--footer-->
-        <footer class="footer">
-            <div class="footer-container">
-                <div class="footer-grid">
-                    <!-- Brand Column -->
-                    <div>
-                        <h2 class="footer-title">Merath</h2>
-                        <p class="footer-desc">
-                            Discover exquisite art pieces for your home that blend timeless craftsmanship with modern
-                            aesthetics.
-                        </p>
-                        <div class="footer-icons">
-                            <a href="#" class="footer-icon">📸</a>
-                            <a href="#" class="footer-icon">📘</a>
-                            <a href="#" class="footer-icon">🐦</a>
-                            <a href="#" class="footer-icon">✉️</a>
-                        </div>
-                    </div>
-
-                    <!-- Shop Column -->
-                    <div>
-                        <h3 class="footer-heading">Shop</h3>
-                        <ul class="footer-links">
-                            <li><a href="/shop">All Products</a></li>
-                            @foreach ($categories as $category)
-                                <li><a href="/shop">{{ $category->name }}</a></li>
-                            @endforeach
-
-                        </ul>
-                    </div>
-
-                    <!-- Info Column -->
-                    <div>
-                        <h3 class="footer-heading">Information</h3>
-                        <ul class="footer-links">
-                            <li><a href="/about">About Us</a></li>
-                            <li><a href="/shipping">Shipping & Returns</a></li>
-                            <li><a href="/privacy">Privacy Policy</a></li>
-                            <li><a href="/terms">Terms & Conditions</a></li>
-                            <li><a href="/faq">FAQ</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Newsletter Column -->
-                    <div>
-                        <h3 class="footer-heading">Join Our Family on Instagram</h3>
-                        <p class="footer-desc">Follow to track updates on new collections and special offers.</p>
-
-                        @csrf
-                        <div class="footer-form">
-                            <a href="https://www.instagram.com/merathart/" target="_blank">
-                                <button type="submit" class="footer-button">Follow Us</button>
-                            </a>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Bottom Bar -->
-                <div class="footer-bottom">
-                    <p>&copy; {{ date('Y') }} Merath. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-
-
-
-        <!-- Scroll Logic -->
-        <script>
-            function scrollSlider(direction) {
-                const slider = document.getElementById('slider');
-                const scrollAmount = direction === 'left' ? -slider.offsetWidth / 2 : slider.offsetWidth / 2;
-                slider.scrollBy({
-                    left: scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        </script>
-        <script>
-            function scrollSlider(direction) {
-                const slider = document.getElementById('slider');
-                const scrollAmount = direction === 'left' ? -slider.offsetWidth / 2 : slider.offsetWidth / 2;
-                slider.scrollBy({
-                    left: scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        </script>
-
-        <script>
-            /*Start NavBar*/
-            function toggleMenu() {
-                const mobileMenu = document.getElementById('mobileMenu');
-                mobileMenu.classList.toggle('open');
-            }
-
-            function toggleCart() {
-                alert('Cart dropdown would appear here.');
-            }
-            /*End NavBar*/
-            function scrollSlider(direction) {
-                const slider = document.getElementById('productSlider');
-                const scrollAmount = slider.offsetWidth / 2;
-                slider.scrollBy({
-                    left: direction === 'left' ? -scrollAmount : scrollAmount,
-                    behavior: 'smooth'
-                });
-            }
-        </script>
-
-
-        <script>
-            const scrollToTopBtn = document.getElementById("scrollToTop");
-
-            window.addEventListener("scroll", () => {
-                if (window.scrollY > 300) {
-                    scrollToTopBtn.style.display = "block";
-                } else {
-                    scrollToTopBtn.style.display = "none";
-                }
-            });
-
-            scrollToTopBtn.addEventListener("click", (e) => {
-                e.preventDefault();
-                window.scrollTo({
-                    top: 0,
-                    behavior: "smooth"
-                });
-            });
-        </script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Cart AJAX
-                document.querySelectorAll('.ajax-cart-form').forEach(form => {
-                    form.addEventListener('submit', function(e) {
-                        e.preventDefault(); // Prevent page reload
-
-                        let formData = new FormData(this);
-
-                        fetch(this.action, {
-                                method: 'POST',
-                                body: formData,
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest',
-
-                                }
-                            })
-                            .then(res => res.json())
-                            .then(data => {
-                                // Update cart count
-                                document.getElementById('cart-count').textContent = data.cartCount;
-
-                                // Show +1 animation
-                                let plus = document.getElementById('cart-plus');
-                                plus.style.display = 'block';
-                                plus.style.opacity = '1';
-                                setTimeout(() => {
-                                    plus.style.opacity = '0';
-                                }, 800);
-                                setTimeout(() => {
-                                    plus.style.display = 'none';
-                                }, 1000);
-                            });
-                    });
-                });
-
-
-
-                // Wishlist AJAX
-                // Wishlist AJAX
-                document.querySelectorAll('.ajax-wishlist-form').forEach(form => {
-                    form.addEventListener('submit', async function(e) {
-                        e.preventDefault();
-
-                        const url = this.action;
-                        const data = new FormData(this);
-
-                        try {
-                            const response = await fetch(url, {
-                                method: 'POST',
-                                headers: {
-                                    'X-Requested-With': 'XMLHttpRequest',
-                                    'X-CSRF-TOKEN': data.get('_token')
-                                },
-                                body: data
-                            });
-
-                            const result = await response.json();
-
-                            // ✅ Update wishlist badge
-                            if (result.wishlist_count !== undefined) {
-                                document.getElementById('wishlist-count').textContent = result
-                                    .wishlist_count;
-                            }
-
-                            // ✅ Show floating ❤️ animation
-                            let plus = document.getElementById('wishlist-plus');
-                            plus.style.display = 'block';
-                            plus.style.opacity = '1';
-                            setTimeout(() => {
-                                plus.style.opacity = '0';
-                            }, 800);
-                            setTimeout(() => {
-                                plus.style.display = 'none';
-                            }, 1000);
-
-                        } catch (err) {
-                            console.error(err);
-                            alert('Error updating wishlist.');
-                        }
-                    });
-                });
-            });
-        </script>
-
-
+    </footer>
 </body>
 
 </html>

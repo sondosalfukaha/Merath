@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\User;
+use App\Models\Contact;
 
 class ProductController extends Controller
 {
@@ -36,7 +37,9 @@ class ProductController extends Controller
         $orders = Order::all();
         $users = User::all();
         $totalUser = User::count();
-        return view('Admin.dashboard', compact('products', 'categories','totalProducts','orders','totalOrders','users','totalUser'));
+        //$contacts = Contact::get();
+        $contacts = Contact::latest()->paginate(10);
+        return view('Admin.dashboard', compact('products', 'categories','totalProducts','orders','totalOrders','users','totalUser','contacts'));
     }
 
     public function store(Request $request)
