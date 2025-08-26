@@ -160,3 +160,6 @@ Route::post('/cart/update/{id}', [CartController::class, 'updateQuantity'])->nam
 
 
 
+
+
+

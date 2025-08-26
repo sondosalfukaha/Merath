@@ -1106,6 +1106,26 @@
         }
     </style>
     <style>
+        .plus-one {
+            position: absolute;
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #28a745;
+            font-weight: bold;
+            font-size: 18px;
+            opacity: 1;
+            transition: all 0.5s ease-out;
+            pointer-events: none;
+        }
+
+        .plus-one.fade-out {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+    </style>
+
+    <style>
         .button-primary {
             background-color: #C4A35A;
             color: white;
@@ -1171,8 +1191,7 @@
             <!-- Product Info -->
             <div style="flex: 1;">
                 <h1 class="font-playfair text-3xl font-bold mb-2">{{ $product->name }}</h1>
-                <p class="text-2xl text-[#C4A35A] font-medium mb-4">${{ $product->price }}</p>
-
+                <p class="text-2xl text-[#C4A35A] font-medium mb-4">JD {{ $product->price }}</p>
                 <div class="mb-6">
                     <p class="text-gray-600">{{ $product->description }}</p>
                 </div>
@@ -1182,33 +1201,33 @@
 
                 </div>
 
-                <!-- Quantity + Add to Cart + Wishlist -->
-                <form method="POST" action="">
-                    @csrf
-                    <div class="mb-4">
-                        <label for="quantity">Quantity:</label>
-                        <input type="number" name="quantity" id="quantity" value="1" min="1"
-                            style="width: 80px; margin-left: 10px;" />
-                    </div>
+                <!-- Add to Cart + Wishlist -->
+                <div style="display: flex; gap: 10px; align-items: center;">
 
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <form action="/cart/add" method="POST" style="display:inline;">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                    <form class="ajax-cart-form" method="POST" action="{{ route('cart.add', $product->id) }}"
+                        style="display:inline;">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="icon-btn">
+                            <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
+                        </button>
+                    </form>
 
-                            <button type="submit" class="button-primary">Add to cart</button>
 
-                        </form>
 
-                        <!-- Wishlist Button -->
-                        <form method="POST" action="">
-                            @csrf
-                            <button type="submit" class="wishlist-btn" title="Add to Wishlist">
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        </form>
-                    </div>
-                </form>
+
+
+                    <!-- Wishlist -->
+                    <form action="{{ route('wishlist.add') }}" method="POST" style="display:inline;">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="wishlist-btn" title="Add to Wishlist">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                    </form>
+
+                </div>
+
 
 
 
@@ -1258,6 +1277,7 @@
         </div>
     </div>
 
+
     <script>
         function showTab(tabId) {
             ['description', 'details', 'shipping'].forEach(id => {
@@ -1267,6 +1287,86 @@
             });
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Cart AJAX
+            document.querySelectorAll('.ajax-cart-form').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault(); // Prevent page reload
+
+                    let formData = new FormData(this);
+
+                    fetch(this.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': formData.get('_token') // <--- add this
+                            }
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            alert('Server error');
+                        });
+
+                });
+
+            });
+
+
+
+            // Wishlist AJAX
+            document.querySelectorAll('.ajax-wishlist-form').forEach(form => {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const url = this.action;
+                    const data = new FormData(this);
+
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': data.get('_token')
+                            },
+                            body: data
+                        });
+
+                        const result = await response.json();
+
+                        // ✅ Update wishlist badge
+                        if (result.wishlist_count !== undefined) {
+                            document.getElementById('wishlist-count').textContent = result
+                                .wishlist_count;
+                        }
+
+                        // ✅ Show floating ❤️ animation
+                        let plus = document.getElementById('wishlist-plus');
+                        plus.style.display = 'block';
+                        plus.style.opacity = '1';
+                        setTimeout(() => {
+                            plus.style.opacity = '0';
+                        }, 800);
+                        setTimeout(() => {
+                            plus.style.display = 'none';
+                        }, 1000);
+
+                    } catch (err) {
+                        console.error(err);
+                        alert('Error updating wishlist.');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
 </body>
 
 </html>
