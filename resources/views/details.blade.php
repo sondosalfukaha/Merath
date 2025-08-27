@@ -1160,6 +1160,44 @@
         .wishlist-btn i {
             pointer-events: none;
         }
+
+        .cart-link:hover,
+        .cart-link:visited,
+        .cart-link:active,
+        .cart-link:focus {
+            color: #fff;
+            /* keep same color for all states */
+        }
+
+        .link-cart:hover,
+        .link-cart:visited,
+        .link-cart:active,
+        .link-cart:focus {
+            color: #000;
+            /* keep same color for all states */
+        }
+
+        .link-cart {
+            color: #000;
+            /* your desired color */
+            text-decoration: none;
+            /* remove underline */
+        }
+
+        .wishlist-link {
+            color: #fff;
+            /* your desired color */
+            text-decoration: none;
+            /* remove underline */
+        }
+
+        .wishlist-link:hover,
+        .wishlist-link:visited,
+        .wishlist-link:active,
+        .wishlist-link:focus {
+            color: #fff;
+            /* keep same color for all states */
+        }
     </style>
 
 </head>
@@ -1181,79 +1219,11 @@
         ">
         +1
     </div>
-    <!-- Fixed Cart Icon -->
-    <div id="fixed-cart"
-        style="
-            position: fixed;
-            bottom: 100px;
-            left: 20px;
-            background: #b3934f;
-            color: white;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            cursor: pointer;
-        ">
-        <a href="/cart" class="cart-link">
-            <i class="fas fa-shopping-cart"></i>
-        </a>
 
-        <span id="cart-count"
-            style="
-                position: absolute;
-                top: -8px;
-                right: -8px;
-                background: red;
-                color: white;
-                border-radius: 50%;
-                width: 20px;
-                height: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 12px;
-    ">{{ $cartCount ?? 0 }}</span>
-    </div>
-    <!-- Fixed Wishlist Icon -->
-    <div id="fixed-wishlist"
-        style="
-        position: fixed;
-        bottom: 180px; /* above cart */
-        left: 20px;
-        background: #b3934f;
-        color: white;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        cursor: pointer;
-    ">
-        <a href="/wishlist" class="wishlist-link">
-            <i class="fas fa-heart"></i>
-        </a>
-        <span id="wishlist-count"
-            style="
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: red;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-    ">
-            {{ $wishlistCount ?? 0 }}</span>
+
+
+    <span id="cart-count" style="color: transparent">{{ $cartCount ?? 0 }}</span>
+    <span id="wishlist-count" style="color: transparent">{{ $wishlistCount ?? 0 }}</span>
     </div>
 
     <!-- Floating +1 ❤️-->

@@ -90,7 +90,10 @@ public function checkout()
                 $item->product_price = $product->price; // if needed
             }
 
-            return view('orderDetials', compact('order', 'orderItems'));
+$cartItems = Cart::where('user_id', Auth::id())->get();
+        $wishlistCount = Wishlist::where('user_id', auth()->id())->count();
+
+            return view('orderDetials', compact('order', 'orderItems','cartItems','wishlistCount'));
         }
 /****from admin dashbard */
 public function updateStatus(Request $request, Order $order)

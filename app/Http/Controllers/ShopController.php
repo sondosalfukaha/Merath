@@ -16,7 +16,7 @@ class ShopController extends Controller
         $products = Product::where('stock', '>', 0)->with('category')->get();
         //$products = Product::all(); // or any filtered query
         $categories = Category::all(); // fetch all categories from the DB
-            $cartItems = auth()->check()
+        $cartItems = auth()->check()
         ? \App\Models\Cart::where('user_id', auth()->id())->get()
         : collect(); // empty collection if not logged in
 
