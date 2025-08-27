@@ -1165,6 +1165,130 @@
 </head>
 
 <body>
+    <!-- Plus Notification -->
+    <div id="cart-plus"
+        style="
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 70px;
+            color: #b3934f85;
+            font-weight: bold;
+            z-index: 9999;
+            pointer-events: none;
+        ">
+        +1
+    </div>
+    <!-- Fixed Cart Icon -->
+    <div id="fixed-cart"
+        style="
+            position: fixed;
+            bottom: 100px;
+            left: 20px;
+            background: #b3934f;
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            cursor: pointer;
+        ">
+        <a href="/cart" class="cart-link">
+            <i class="fas fa-shopping-cart"></i>
+        </a>
+
+        <span id="cart-count"
+            style="
+                position: absolute;
+                top: -8px;
+                right: -8px;
+                background: red;
+                color: white;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 12px;
+    ">{{ $cartCount ?? 0 }}</span>
+    </div>
+    <!-- Fixed Wishlist Icon -->
+    <div id="fixed-wishlist"
+        style="
+        position: fixed;
+        bottom: 180px; /* above cart */
+        left: 20px;
+        background: #b3934f;
+        color: white;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        cursor: pointer;
+    ">
+        <a href="/wishlist" class="wishlist-link">
+            <i class="fas fa-heart"></i>
+        </a>
+        <span id="wishlist-count"
+            style="
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+    ">
+            {{ $wishlistCount ?? 0 }}</span>
+    </div>
+
+    <!-- Floating +1 ❤️-->
+    <div id="wishlist-plus"
+        style="
+        display: none;
+        position: fixed;
+        bottom: 180px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 60px;
+        color: rgba(179, 147, 79, 0.6);
+        font-weight: bold;
+        z-index: 9999;
+        pointer-events: none;
+    ">
+        ❤️
+    </div>
+
+    <!-- Plus Notification -->
+    <div id="cart-plus"
+        style="
+            display: none;
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 70px;
+            color: #b3934f85;
+            font-weight: bold;
+            z-index: 9999;
+            pointer-events: none;
+        ">
+        +1
+    </div>
     <!--Start NavBar-->
     <header>
         <div class="container">
@@ -1203,29 +1327,21 @@
 
                 <!-- Add to Cart + Wishlist -->
                 <div style="display: flex; gap: 10px; align-items: center;">
-
-                    <form class="ajax-cart-form" method="POST" action="{{ route('cart.add', $product->id) }}"
-                        style="display:inline;">
+                    <form class="ajax-wishlist-form" method="POST" action="/wishlist/add" style="display:inline;">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
                         <button type="submit" class="icon-btn">
-                            <i class="fa-solid fa-cart-shopping" style="color: #b3934f"></i>
+                            <i class="fa-regular fa-heart" style="color: #b3934f"></i>
+                            <!-- outline -->
                         </button>
                     </form>
 
 
-
-
-
-                    <!-- Wishlist -->
-                    <form action="{{ route('wishlist.add') }}" method="POST" style="display:inline;">
+                    <form id="add-to-cart-form" method="POST">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <button type="submit" class="wishlist-btn" title="Add to Wishlist">
-                            <i class="fa-regular fa-heart"></i>
-                        </button>
+                        <button type="submit" class="button-primary">Add to Cart</button>
                     </form>
-
                 </div>
 
 
@@ -1362,6 +1478,82 @@
                     }
                 });
             });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Wishlist AJAX
+            document.querySelectorAll('.ajax-wishlist-form').forEach(form => {
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+
+                    const url = this.action;
+                    const data = new FormData(this);
+
+                    try {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': data.get('_token')
+                            },
+                            body: data
+                        });
+
+                        const result = await response.json();
+
+                        // ✅ Update wishlist badge
+                        if (result.wishlist_count !== undefined) {
+                            document.getElementById('wishlist-count').textContent = result
+                                .wishlist_count;
+                        }
+
+                        // ✅ Show floating ❤️ animation
+                        let plus = document.getElementById('wishlist-plus');
+                        plus.style.display = 'block';
+                        plus.style.opacity = '1';
+                        setTimeout(() => {
+                            plus.style.opacity = '0';
+                        }, 800);
+                        setTimeout(() => {
+                            plus.style.display = 'none';
+                        }, 1000);
+
+                    } catch (err) {
+                        console.error(err);
+                        alert('Error updating wishlist.');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById('add-to-cart-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // stop page reload
+
+            const formData = new FormData(this);
+
+            fetch("{{ route('cart.add', $product->id) }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                    },
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    // update cart count
+                    document.getElementById("cart-count").textContent = data.cart_count;
+
+                    // show +1 animation
+                    const plus = document.getElementById("cart-plus");
+                    plus.style.display = "block";
+                    plus.classList.remove("fade-out");
+                    setTimeout(() => plus.classList.add("fade-out"), 100);
+                    setTimeout(() => (plus.style.display = "none"), 600);
+                })
+                .catch(err => console.error(err));
         });
     </script>
 
