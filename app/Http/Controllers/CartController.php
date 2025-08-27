@@ -61,35 +61,45 @@ class CartController extends Controller
             return back()->with('success', 'Cart cleared');
         }
  public function add($productId)
-    {
-        try {
-            $cart = Cart::where('user_id', auth()->id())->where('product_id', $productId)->first();
+{
+    try {
+        $product = Product::findOrFail($productId); // get product with stock
+        $cart = Cart::where('user_id', auth()->id())
+                    ->where('product_id', $productId)
+                    ->first();
 
-            if ($cart) {
+        if ($cart) {
+            // only increment if less than available stock
+            if ($cart->quantity < $product->stock) {
                 $cart->quantity += 1;
                 $cart->save();
-            } else {
+            }
+        } else {
+            // add only if stock is available
+            if ($product->stock > 0) {
                 Cart::create([
                     'user_id' => auth()->id(),
                     'product_id' => $productId,
                     'quantity' => 1
                 ]);
             }
-
-            $cartCount = Cart::where('user_id', auth()->id())->sum('quantity');
-
-            return response()->json([
-                'success' => true,
-                'cartCount' => $cartCount
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage()
-            ], 500);
         }
+
+        $cartCount = Cart::where('user_id', auth()->id())->sum('quantity');
+
+        return response()->json([
+            'success' => true,
+            'cartCount' => $cartCount
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
     }
+}
+
 /*
 public function updateQuantity(Request $request, $id)
 {
